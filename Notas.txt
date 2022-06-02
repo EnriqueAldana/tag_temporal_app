@@ -1,0 +1,11 @@
+Manejo de estado mediante
+GetX 
+
+Correr
+flutter run
+
+Reconstruir el proyecto. En linea de comandos
+flutter clean
+
+
+

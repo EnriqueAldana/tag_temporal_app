@@ -1,0 +1,3 @@
+Pendientes por resolver.
+
+1.- El escenario de registrar un usuario sin elegir una foto produce una excepcion.

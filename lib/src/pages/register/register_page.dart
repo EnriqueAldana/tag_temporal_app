@@ -46,7 +46,7 @@ RegisterController con = Get.put(RegisterController());
             _textFieldPhone(),
             _textFieldPassword(),
             _textFieldPasswordConfirm(),
-            _buttonRegister()
+            _buttonRegister(context)
         ]
       ),
     )
@@ -83,7 +83,7 @@ Widget _imageUser(BuildContext context){
           builder: (value) => CircleAvatar(
           backgroundImage: con.imageFile != null
           ? FileImage(con.imageFile!)
-                : AssetImage('assets/img/user_profile.png') as ImageProvider,
+              : AssetImage('assets/img/user_profile.png') as ImageProvider,
           radius: 60,
           backgroundColor: Colors.white,
          ),
@@ -198,13 +198,13 @@ Widget _textYourInfo(){
         )
         );
 }
-Widget _buttonRegister(){
+Widget _buttonRegister(BuildContext context){
 
   return Container(
     width: double.infinity,
     margin: EdgeInsets.symmetric(horizontal: 40),
     child: ElevatedButton(
-    onPressed: ()=> con.register(), 
+    onPressed: ()=> con.register(context),
     style: ElevatedButton.styleFrom(
       padding: EdgeInsets.symmetric(vertical: 15)
     ),

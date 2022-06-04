@@ -1,7 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:tag_temporal_app/src/models/response_api.dart';
 import 'package:tag_temporal_app/src/models/user.dart';
 import 'package:tag_temporal_app/src/providers/users_provider.dart';
 
@@ -20,7 +24,7 @@ class RegisterController extends GetxController {
   ImagePicker picker = ImagePicker();
   File? imageFile;
 
-  void register() async {
+  void register( BuildContext context) async {
     String email = emailController.text.trim();
     String name = nameController.text.trim();
     String lastname = lastnameController.text.trim();
@@ -33,6 +37,10 @@ class RegisterController extends GetxController {
     print('Password ${password}');
 
     if (isValidForm(email, name, lastname,lastname2, phone, password, confirmPassword)) {
+
+      ProgressDialog progressDialog= ProgressDialog(context: context);
+      progressDialog.show(max: 100, msg: 'Registrando usuario...');
+
       User user = User(
         email: email,
         name: name,
@@ -42,17 +50,27 @@ class RegisterController extends GetxController {
         password: password,
       );
 
-      Response response= await usersProvider.create(user);
-      print('RESPONSE: ${response.body}');
-      if(response.statusCode == 200){
-        Get.snackbar('Registro exitoso', 'Su registro ha sido ingresado al sistema. Ahora puede ingresar.');
-      }else{
-        Get.snackbar('Error en el registro', 'Ha ocurrido un error: ${response.body}');
-      }
+      Stream stream = await usersProvider.createWithImage(user, imageFile!);
+      stream.listen((res) {
+         progressDialog.close();
+        ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
+        if(responseApi.success == true){
+          GetStorage().write('user', responseApi.data); // Datos del usuario en la sesion.
+          // Mandar a pagina de visitante
+          goToVisitorPage();
+
+        }
+        else {
+          Get.snackbar('Registro fallido', responseApi.message ?? '');
+        }
+      });
       
     }
   }
 
+  void goToVisitorPage(){
+    Get.offNamedUntil('/visitor/tags/list', (route) => false);
+  }
   bool isValidForm(
       String email,
       String name,

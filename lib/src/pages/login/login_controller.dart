@@ -4,6 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:tag_temporal_app/src/models/response_api.dart';
 import 'package:tag_temporal_app/src/providers/users_provider.dart';
 
+import '../../models/user.dart';
+
 class LoginController extends GetxController {
 
   TextEditingController emailController = TextEditingController();
@@ -26,7 +28,14 @@ class LoginController extends GetxController {
         print('Response Api : ${responseApi.toJson()}');
         if(responseApi.success == true){
           GetStorage().write('user', responseApi.data); // Datos del usuario en la sesion.
-          goToHomePage();
+          User myUser= User.fromJson(GetStorage().read('user'));
+
+          if(myUser.roles!.length >1){
+            goToRolesPage();
+          }
+          else {  // Si solo tiene un rol es el de defecto = Visitor
+            goToVisitorPage();
+          }
         }
         else {
           Get.snackbar('Entrada fallida ...', responseApi.message ?? '');
@@ -38,6 +47,18 @@ class LoginController extends GetxController {
   void goToHomePage(){
     Get.offNamedUntil('/home', (route) => false);
   }
+  void goToVisitorPage(){
+    Get.offNamedUntil('/visitor/tags/list', (route) => false);
+  }
+
+  void goToRolesPage(){
+    Get.offNamedUntil('/roles', (route) => false);
+  }
+
+  void goToResidentPage(){
+    Get.offNamedUntil('/resident/tags/list', (route) => false);
+  }
+
   bool isValidForm(String email, String password) {
 
     if (email.isEmpty) {

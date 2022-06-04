@@ -3,7 +3,7 @@
 //     final user = userFromJson(jsonString);
 
 import 'dart:convert';
-
+import 'package:tag_temporal_app/src/models/rol.dart';
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
@@ -18,6 +18,7 @@ class User {
     dynamic? imagePath;
     String? password;
     String? sessionToken;
+    List<Rol>? roles= [];
 
     User({
         this.id,
@@ -28,7 +29,8 @@ class User {
         this.phone,
         this.imagePath,
         this.password,
-        this.sessionToken
+        this.sessionToken,
+        this.roles,
 
     });
 
@@ -44,6 +46,7 @@ class User {
         imagePath: json["image_path"],
         password: json["password"],
         sessionToken: json["session_token"],
+        roles: json["roles"] == null ? [] : List<Rol>.from(json["roles"].map((model)=> Rol.fromJson(model))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -56,5 +59,6 @@ class User {
         "image_path": imagePath,
         "password": password,
         "session_token": sessionToken,
+        "roles": roles,
     };
 }

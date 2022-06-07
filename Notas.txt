@@ -9,3 +9,8 @@ flutter clean
 
 
 
+Mejoras.
+
+El caso de uso de registrar usuario en el escenario donde el BAckEnd no esta
+funcionando la aplicacion se queda en espera de respuesta.
+

@@ -49,22 +49,22 @@ class RegisterController extends GetxController {
         phone: phone,
         password: password,
       );
+      print('Enviando el archivo  ${imageFile} a FireBase');
+        Stream stream = await usersProvider.createWithImage(user, imageFile!);
+        stream.listen((res) {
+          progressDialog.close();
+          ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
+          print('Respuesta de mandar imagen a Firebase ${responseApi}');
+          if(responseApi.success == true){
+            GetStorage().write('user', responseApi.data); // Datos del usuario en la sesion.
+            // Mandar a pagina de visitante
+            goToVisitorPage();
 
-      Stream stream = await usersProvider.createWithImage(user, imageFile!);
-      stream.listen((res) {
-         progressDialog.close();
-        ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
-        if(responseApi.success == true){
-          GetStorage().write('user', responseApi.data); // Datos del usuario en la sesion.
-          // Mandar a pagina de visitante
-          goToVisitorPage();
-
-        }
-        else {
-          Get.snackbar('Registro fallido', responseApi.message ?? '');
-        }
-      });
-      
+          }
+          else {
+            Get.snackbar('Registro fallido al guardar imagen', responseApi.message ?? '');
+          }
+        });
     }
   }
 
@@ -78,7 +78,7 @@ class RegisterController extends GetxController {
       String lastname2,
       String phone,
       String password,
-      String confirmPassword
+      String confirmPassword,
   ) {
 
     if (email.isEmpty) {
@@ -124,6 +124,11 @@ class RegisterController extends GetxController {
       return false;
     }
 
+    if (imageFile == null){
+      Get.snackbar('Formulario no valido', 'Haga click en la imagen y elija su foto o use su cámara');
+      return false;
+    }
+
     return true;
   }
 
@@ -159,7 +164,7 @@ class RegisterController extends GetxController {
         ));
 
     AlertDialog alertDialog = AlertDialog(
-      title: Text('Selecciona una opción'),
+      title: Text('Seleccione una opción'),
       actions: [
         galleryButton,
         cameraButton

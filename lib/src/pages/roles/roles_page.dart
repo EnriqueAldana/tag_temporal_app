@@ -20,7 +20,7 @@ class RolesPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        margin: EdgeInsets.symmetric( vertical: MediaQuery.of(context).size.height * 0.2),
+        margin: EdgeInsets.symmetric( vertical: MediaQuery.of(context).size.height * 0.10),
         child: ListView(
           children: con.user.roles != null ? con.user.roles!.map((Rol rol) {
             return _cardRol(rol);
@@ -37,7 +37,7 @@ class RolesPage extends StatelessWidget {
         child: Column(
           children: [
             Container(  // Imagen
-              margin: EdgeInsets.only(top:20 ,bottom: 10),
+              margin: EdgeInsets.only(top:15 ,bottom: 10),
               height: 100,
               child: FadeInImage(
                 image: NetworkImage(rol.image!),

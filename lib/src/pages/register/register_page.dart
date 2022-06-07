@@ -23,7 +23,7 @@ RegisterController con = Get.put(RegisterController());
 
  Widget _boxForm(BuildContext context){
   return Container(
-    height: MediaQuery.of(context).size.height * 0.70,
+    height: MediaQuery.of(context).size.height * 0.55,
     margin: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.30, left: 50 , right: 50),
     decoration: BoxDecoration(
       color: Colors.white,
@@ -83,7 +83,7 @@ Widget _imageUser(BuildContext context){
           builder: (value) => CircleAvatar(
           backgroundImage: con.imageFile != null
           ? FileImage(con.imageFile!)
-              : AssetImage('assets/img/user_profile.png') as ImageProvider,
+              : AssetImage('assets/img/user_profile_textoFoto.png') as ImageProvider,
           radius: 60,
           backgroundColor: Colors.white,
          ),

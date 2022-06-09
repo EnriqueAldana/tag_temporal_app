@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tag_temporal_app/src/pages/administrator/categories/create/Administrator_categories_create_controller.dart';
+import 'package:tag_temporal_app/src/models/category.dart';
 
 import 'administrator_productss_create_controller.dart';
 
@@ -14,15 +14,13 @@ class AdministratorProductsCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(   // Posicionar elementos uno arriba del otro
+      body: Obx(() => Stack(   // Posicionar elementos uno arriba del otro
         children: [
           _backgroudCover(context),   // Primero se pone el color amarillo
           _boxForm(context),
           _textNewProduct()
-
-
         ],
-      ),
+      )),
     );
   }
 
@@ -47,9 +45,10 @@ class AdministratorProductsCreatePage extends StatelessWidget {
                 _textFieldName(),
                 _textFieldDescription(),
                 _textFieldPrice(),
+                _dropDownCategories(con.categories),
                 _textImages(),
                 Container(
-                  margin: EdgeInsets.only(top:20),
+
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -75,32 +74,70 @@ class AdministratorProductsCreatePage extends StatelessWidget {
     );
   }
 
+  Widget _dropDownCategories(List<Category> categories){
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 55),
+        margin: EdgeInsets.only(top:15),
+        child: DropdownButton(
+          underline: Container(
+            alignment: Alignment.centerRight,
+            child: Icon(
+              Icons.arrow_drop_down_circle,
+              color: Colors.amber,
+            ),
+          ),
+          elevation: 3,
+          isExpanded: true,
+          hint: Text(
+            'Seleccione una categoría',
+            style: TextStyle(
+              fontSize: 17
+            ),
+          ),
+          items: _dropDownItems(categories),
+          value: con.idCategory.value == '' ? null : con.idCategory.value,
+          onChanged: (option){
+            print('Opcion seleccionada de categoria ${option}');
+            con.idCategory.value =option.toString();
+          },
+
+        )
+    );
+  }
+
+
+  List<DropdownMenuItem<String?>> _dropDownItems(List<Category> categories){
+    List<DropdownMenuItem<String>> list = [];
+    categories.forEach((category) {
+      list.add(DropdownMenuItem(
+          child: Text(category.name ?? ''),
+          value: category.id,
+      ));
+    });
+
+    return list;
+  }
+
+
 Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
 
-    return GetBuilder<AdministratorProductsCreateController>(
-        builder: (value) => GestureDetector(
+    return  GestureDetector(
           onTap: () => con.showAlertDialog(context, numberFile),
-          child: imageFile!= null
-              ? Card(
+          child:  Card(
                 elevation: 3,
                 child: Container(
+                  padding: EdgeInsets.all(10),
                   height: 70,
                     width: MediaQuery.of(context).size.width * 0.15,
-                    child: Image.file(
+                    child: imageFile != null
+                      ? Image.file(
                       imageFile,
                       fit: BoxFit.cover,
                     )
-                ),
-              )
-              : Card(
-            elevation: 3,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.15,
-              child: Image(
-                image: AssetImage('assets/img/cover_image.png'),
+                        : Image(
+                      image: AssetImage('assets/img/cover_image.png'),
+                )
               ),
-            ),
-          ),
         )
     );
 
@@ -172,7 +209,8 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
         child: Text(
           'Ingresa la información siguiente:',
           style: TextStyle(
-              color: Colors.black
+              color: Colors.black,
+              fontSize: 17
           ),
         )
     );
@@ -181,9 +219,9 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
     return Container(
         margin: EdgeInsets.only(top: 40, bottom: 20),
         child: Text(
-          'Imagenes del producto',
+          'Carge las imagenes del producto.',
           style: TextStyle(
-              color: Colors.black
+              fontSize: 17
           ),
         )
     );
@@ -195,7 +233,7 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: ElevatedButton(
          onPressed: (){
-           con.createCategory();
+           con.createProduct(context);
          },
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15)

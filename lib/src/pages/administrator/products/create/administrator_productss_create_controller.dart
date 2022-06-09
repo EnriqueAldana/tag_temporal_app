@@ -1,13 +1,17 @@
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:tag_temporal_app/src/models/product.dart';
 import 'package:tag_temporal_app/src/models/response_api.dart';
 import 'package:tag_temporal_app/src/providers/categories_provider.dart';
 
 import '../../../../models/category.dart';
+import '../../../../providers/products_provider.dart';
 
 class AdministratorProductsCreateController extends GetxController {
 
@@ -20,27 +24,96 @@ class AdministratorProductsCreateController extends GetxController {
   File? imageFile1;
   File? imageFile2;
   File? imageFile3;
-  void createCategory () async {
-    String name = nameController.text;
-    String description = descriptionController.text;
-    print('name : ${name}');
-    print('name : ${description}');
-    if( name.isNotEmpty && description.isNotEmpty){
-        Category category = Category(
-          name: name,
-          description : description
-        );
-        ResponseApi  responseApi = await categoriesProvider.create(category);
-        Get.snackbar('Proceso terminado', responseApi.message ?? '' );
-        if (responseApi.success == true){
-          clearForm();
-        }
-    }
-    else{
-      Get.snackbar('Formulario no válido', 'Ingresa datos en todos los campos');
-    }
+
+var  idCategory=''.obs;
+
+  List<Category> categories= <Category>[].obs;
+
+  ProductsProvider productsProvider = ProductsProvider();
+  AdministratorProductsCreateController(){
+    getCategories();
+  }
+  void getCategories() async {
+    var result= await categoriesProvider.gerAll();
+    categories.clear();
+    categories.addAll(result);
+
   }
 
+  void createProduct (BuildContext context) async {
+    String name = nameController.text;
+    String description = descriptionController.text;
+    String price = priceController.text;
+
+    print('name : ${name}');
+    print('description : ${description}');
+    print('PRICE : ${price}');
+    print('ID CATEGORY : ${idCategory}');
+    ProgressDialog progressDialog= ProgressDialog(context: context);
+    if( isValidForm(name,description,price)){
+        Product product = Product(
+          name: name,
+          description : description,
+          price: double.parse(price),
+          idCategory: idCategory.value
+        );
+        List<File> images = [];
+        images.add(imageFile1!);
+        images.add(imageFile2!);
+        images.add(imageFile3!);
+
+        progressDialog.show(max: 100, msg: 'Espere un momento...');
+        Stream stream = await productsProvider.create(product, images);
+        stream.listen((res) { 
+          progressDialog.close();
+          ResponseApi responseApi= ResponseApi.fromJson(json.decode(res));
+          Get.snackbar('Proceso terminado.', responseApi.message ?? '');
+          if(responseApi.success == true){
+            clearForm();
+          }
+
+
+        });
+    }
+
+  }
+
+  bool isValidForm(String name, String description , String price){
+
+    if (name.isEmpty) {
+      Get.snackbar('Formulario no valido', 'Ingresa el nombre del producto');
+      return false;
+    }
+
+    if (description.isEmpty) {
+      Get.snackbar('Formulario no valido', 'Ingresa la descripción del producto');
+      return false;
+    }
+
+    if (price.isEmpty) {
+      Get.snackbar('Formulario no valido', 'Ingresa el precio del producto.');
+      return false;
+    }
+    if(idCategory.value == ''){
+      Get.snackbar('Formulario no valido', 'Selecciona una categoría para el producto');
+      return false;
+    }
+
+    if(imageFile1 == null){
+      Get.snackbar('Formulario no valido', 'Dá click y selecciona una primera imagen para el procuto');
+      return false;
+    }
+    if(imageFile2 == null){
+      Get.snackbar('Formulario no valido', 'Dá click y selecciona una segunda imagen para el procuto');
+      return false;
+    }
+    if(imageFile3 == null){
+      Get.snackbar('Formulario no valido', 'Dá click y selecciona una tercera imagen para el procuto');
+      return false;
+    }
+    return true;
+
+  }
   Future selectImage(ImageSource imagenSource, int numberFile) async{
     XFile? image= await picker.pickImage(source: imagenSource);
     if (image != null) {
@@ -97,6 +170,12 @@ class AdministratorProductsCreateController extends GetxController {
     nameController.text = '';
     descriptionController.text = '';
     priceController.text='';
+    priceController.text='';
+    imageFile1= null;
+    imageFile2= null;
+    imageFile3= null;
+    idCategory.value='';
+    update();
   }
 
 }

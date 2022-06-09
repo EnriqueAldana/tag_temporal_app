@@ -48,7 +48,7 @@ class LoginController extends GetxController {
     Get.offNamedUntil('/home', (route) => false);
   }
   void goToVisitorPage(){
-    Get.offNamedUntil('/visitor/tags/list', (route) => false);
+    Get.offNamedUntil('/visitor/home', (route) => false);
   }
 
   void goToRolesPage(){
@@ -56,7 +56,7 @@ class LoginController extends GetxController {
   }
 
   void goToResidentPage(){
-    Get.offNamedUntil('/resident/tags/list', (route) => false);
+    Get.offNamedUntil('/resident/home', (route) => false);
   }
 
   bool isValidForm(String email, String password) {

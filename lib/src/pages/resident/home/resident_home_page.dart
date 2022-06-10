@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/pages/administrator/tags/list/administrator_tags_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/home/resident_home_controller.dart';
+import 'package:tag_temporal_app/src/pages/resident/products/list/resident_product_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/tags/list/resident_tags_list_controller.dart';
 import 'package:tag_temporal_app/src/pages/visitor/tags/list/visitor_tags_list_page.dart';
@@ -18,7 +19,7 @@ class ResidentHomePage extends StatelessWidget {
       IndexedStack(
         index: con.indexTab.value,
         children: [
-          AdministratorTagsListPage(),
+          ResidentproductListPage(),
           VisitorTagsListPage(),
           ResidentProfileInfoPage(),
 
@@ -40,7 +41,7 @@ class ResidentHomePage extends StatelessWidget {
       items: [
         BottomNavyBarItem(
             icon: Icon(Icons.apps),
-            title: Text('Inicio'),
+            title: Text('Tags'),
             activeColor: Colors.white,
             inactiveColor: Colors.black
             ),

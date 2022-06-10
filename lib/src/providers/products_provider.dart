@@ -11,7 +11,27 @@ import '../models/user.dart';
 
 class ProductsProvider extends GetConnect{
 
+  String url = Environment.API_URL + 'api/products';
+
   User userSession= User.fromJson(GetStorage().read('user') ?? {});
+
+  Future<List<Product>> findByCategory(String idCategory) async {
+    Response response = await get(
+        '$url/findByCategory/$idCategory',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': userSession.sessionToken ?? ''
+        }
+    ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
+
+    if( response.statusCode == 401){
+      Get.snackbar('Petición denegada', 'No se tiene permiso para traer la lista de productos x categorías');
+      return [];
+    }
+    List<Product> products = Product.fromJsonList(response.body);
+
+    return products;
+  }
 
   Future<Stream> create(Product product,List<File> images) async {
     Uri uri = Uri.http(Environment.API_URL_OLD, '/api/products/create');

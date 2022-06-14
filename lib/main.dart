@@ -10,6 +10,7 @@ import 'package:tag_temporal_app/src/pages/home/home_page.dart';
 import 'package:tag_temporal_app/src/pages/login/login_page.dart';
 import 'package:tag_temporal_app/src/pages/register/register_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/home/resident_home_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/orders/create/resident_orders_create_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/update/resident_profile_update_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/tags/list/resident_tags_list_page.dart';
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name:'/resident/home', page: ()=> ResidentHomePage()),
         GetPage(name:'/resident/profile/info', page: ()=> ResidentProfileInfoPage()),
         GetPage(name:'/resident/profile/update', page: ()=> ResidentProfileUpdatePage()),
+        GetPage(name:'/resident/orders/create', page: ()=> ResidentOrdersCreatePage()),
 
       ],
       theme: ThemeData(

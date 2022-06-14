@@ -10,6 +10,9 @@ class ResidentProfileInfoController extends GetxController{
     GetStorage().remove('user');   // Elimina la session.
     Get.offNamedUntil('/', (route) => false); // Elimina el historial de pantallas
   }
+  void goToRoles(){
+    Get.offNamedUntil('/roles', (route) => false);
+  }
 
   void goToProfileUpdate(){
     Get.toNamed('/resident/profile/update');

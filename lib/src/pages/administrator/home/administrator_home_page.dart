@@ -21,7 +21,7 @@ class AdministratorHomePage extends StatelessWidget {
       IndexedStack(
         index: con.indexTab.value,
         children: [
-          AdministratorTagsListPage(),
+          AdministratorProductsCreatePage(),
           AdministratorCategoriesCreatePage(),
           AdministratorProductsCreatePage(),
          ResidentProfileInfoPage(),

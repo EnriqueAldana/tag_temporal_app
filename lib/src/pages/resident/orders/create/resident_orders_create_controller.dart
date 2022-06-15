@@ -56,4 +56,8 @@ class ResidentOrdersCreateController extends GetxController{
     }
 
   }
+
+  void goToAddresList(){
+    Get.toNamed('/resident/address/list');
+  }
 }

@@ -45,6 +45,10 @@ dependencies:
   modal_bottom_sheet: ^2.0.1
   flutter_image_slideshow: ^0.1.2
   fluttertoast: ^8.0.9
+  google_maps_flutter: ^2.1.7
+  geolocator: ^8.2.1
+  geocoding: ^2.0.4
+  location: ^4.4.0
 
   
 

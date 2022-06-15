@@ -9,6 +9,8 @@ import 'package:tag_temporal_app/src/pages/administrator/tags/list/administrator
 import 'package:tag_temporal_app/src/pages/home/home_page.dart';
 import 'package:tag_temporal_app/src/pages/login/login_page.dart';
 import 'package:tag_temporal_app/src/pages/register/register_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/address/create/resident_address_create_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/address/list/resident_address_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/home/resident_home_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/create/resident_orders_create_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
@@ -56,7 +58,8 @@ class _MyAppState extends State<MyApp> {
         GetPage(name:'/resident/profile/info', page: ()=> ResidentProfileInfoPage()),
         GetPage(name:'/resident/profile/update', page: ()=> ResidentProfileUpdatePage()),
         GetPage(name:'/resident/orders/create', page: ()=> ResidentOrdersCreatePage()),
-
+        GetPage(name:'/resident/address/create', page: ()=> ResidentAddressCreatePage()),
+        GetPage(name:'/resident/address/list', page: ()=> ResidentAddressListPage()),
       ],
       theme: ThemeData(
         primaryColor: Colors.amber,

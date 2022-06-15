@@ -1,3 +1,12 @@
 Pendientes por resolver.
 
-1.- El escenario de registrar un usuario sin elegir una foto produce una excepcion.
+OK 1.- El escenario de registrar un usuario sin elegir una foto produce una excepcion.
+
+2.- Pantalla para Altas de Compañias.
+3.- Pantalla para promover Visitantes a Residentes x parte del administrador de empresa
+    Impacta al Modulo de direcciones.
+
+
+Compilacion para Flutter luego de agregar dependencias
+
+flutter --no-color pub get

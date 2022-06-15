@@ -14,3 +14,9 @@ Mejoras.
 El caso de uso de registrar usuario en el escenario donde el BAckEnd no esta
 funcionando la aplicacion se queda en espera de respuesta.
 
+
+Estilos para Google Maps
+https://mapstyle.withgoogle.com/
+Eliminador de espacios.
+https://www.browserling.com/tools/remove-all-whitespace
+

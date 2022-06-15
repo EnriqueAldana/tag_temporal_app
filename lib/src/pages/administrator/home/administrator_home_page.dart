@@ -8,6 +8,7 @@ import 'package:tag_temporal_app/src/pages/resident/tags/list/resident_tags_list
 import 'package:tag_temporal_app/src/pages/visitor/tags/list/visitor_tags_list_page.dart';
 import 'package:tag_temporal_app/src/utils/custom_animated_bottom_bar.dart';
 
+import '../../resident/products/list/resident_product_list_page.dart';
 import 'administrator_home_controller.dart';
 
 class AdministratorHomePage extends StatelessWidget {
@@ -21,10 +22,10 @@ class AdministratorHomePage extends StatelessWidget {
       IndexedStack(
         index: con.indexTab.value,
         children: [
-          AdministratorProductsCreatePage(),
+          ResidentproductListPage(),
           AdministratorCategoriesCreatePage(),
           AdministratorProductsCreatePage(),
-         ResidentProfileInfoPage(),
+          ResidentProfileInfoPage(),
 
         ],
       ))

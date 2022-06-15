@@ -167,12 +167,12 @@ Widget _buttonLogin(){
   Widget _imageCover(){
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.only(top: 5, bottom: 5),
+        margin: EdgeInsets.only(top: 2, bottom: 2),
         alignment: Alignment.center ,
         child: Image.asset(
         'assets/img/tagTemporal_Logo_Ambar.PNG',
         width: 220,
-        height: 215,
+        height: 200,
 
       ),
     ),

@@ -10,3 +10,12 @@ OK 1.- El escenario de registrar un usuario sin elegir una foto produce una exce
 Compilacion para Flutter luego de agregar dependencias
 
 flutter --no-color pub get
+
+
+
+ListView.builder(
+                      itemCount: snapshot.data?.length ?? 0,
+                      itemBuilder: (_ , index){
+                        return _cardProduct(context, snapshot.data![index]);
+                      }
+                  );

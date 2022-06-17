@@ -11,7 +11,7 @@ ResidentProductsListController con = Get.put(ResidentProductsListController());
 
 @override
 Widget build(BuildContext context) {
-  return Obx(() => DefaultTabController(
+  return  Obx(() => DefaultTabController(
     length: con.categories.length,
     child: Scaffold(
       appBar: PreferredSize(
@@ -44,16 +44,16 @@ Widget build(BuildContext context) {
       body: TabBarView(
         children: con.categories.map((Category category) {
           return FutureBuilder(
-            future: con.getProducts(category.id ?? '1') ,
+            future: con.getProducts(category.id ?? '1',con.productName.value) ,
             builder: (context, AsyncSnapshot<List<Product>> snapshot){
               if (snapshot.hasData){
                 if(snapshot.data!.length >0){
-                  return ListView.builder(
-                      itemCount: snapshot.data?.length ?? 0,
-                      itemBuilder: (_ , index){
-                        return _cardProduct(context, snapshot.data![index]);
-                      }
-                  );
+                  return  ListView.builder(
+                          itemCount: snapshot.data?.length ?? 0,
+                          itemBuilder: (_ , index){
+                            return _cardProduct(context, snapshot.data![index]);
+                          }
+                      );
                 }
                 else{
                   return NoDataWidget(text:'No hay tags en ésta categoría ');
@@ -91,6 +91,7 @@ Widget _textFieldSearch(BuildContext context){
     child: Container(
       width: MediaQuery.of(context).size.width * 0.75,
       child: TextField(
+        onChanged: con.onChangeText,
         decoration: InputDecoration(
           hintText: 'Buscar tag',
           suffixIcon: Icon(Icons.search, color: Colors.grey),

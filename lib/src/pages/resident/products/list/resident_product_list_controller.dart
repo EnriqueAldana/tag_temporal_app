@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/models/product.dart';
@@ -14,8 +16,23 @@ ProductsProvider productsProvider= ProductsProvider();
 
 List<Category> categories = <Category>[].obs;
 
+var productName = ''.obs;
+
+Timer? searchOnStoppedTyping;
 ResidentProductsListController () {
   getCategories();
+}
+
+void onChangeText(String text){
+  const duration = Duration(milliseconds: 800);
+  if (searchOnStoppedTyping !=null){
+    searchOnStoppedTyping?.cancel();
+  }
+  searchOnStoppedTyping = Timer(duration, () {
+    productName.value=text;
+    print('Texto Producto de busqueda COMPLETO: ${text}');
+
+  });
 }
 
 void getCategories() async {
@@ -25,8 +42,17 @@ void getCategories() async {
   categories.addAll(result);
 }
 
-Future<List <Product>> getProducts(String idCategory) async {
-  return await productsProvider.findByCategory(idCategory);
+Future<List <Product>> getProducts(String idCategory, String productName) async {
+
+  print('Entrando en getProducto: ${idCategory} ${productName}');
+    if(productName.isEmpty){
+      return await productsProvider.findByCategory(idCategory);
+    }
+    else{
+      return await productsProvider.findByNameAndCategory(idCategory, productName);
+    }
+
+
 }
 
 void goToOrderCreate(){

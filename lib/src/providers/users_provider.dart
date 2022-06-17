@@ -33,6 +33,23 @@ class UsersProvider extends GetConnect {
     return users;
   }
 
+  Future<List<User>> findVisitorMenByName(String name) async {
+    Response response = await get(
+        '$url/findVisitorMenByName/$name',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': userSession.sessionToken ?? ''
+        }
+    ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
+
+    if( response.statusCode == 401){
+      Get.snackbar('Petición denegada', 'No se tiene permiso para traer la lista de categorías');
+      return [];
+    }
+    List<User> users = User.fromJsonList(response.body);
+
+    return users;
+  }
   Future<Response> create(User user) async {
     Response response = await post(
         '$url/create',

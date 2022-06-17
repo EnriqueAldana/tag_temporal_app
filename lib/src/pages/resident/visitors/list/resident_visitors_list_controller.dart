@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,10 +20,24 @@ class ResidentVisitorListController extends GetxController{
   User user = User.fromJson(GetStorage().read('user'));
 
   var  radioValue= 0.obs;
+  String? userName='';
+  Timer? searchOnStoppedTyping;
 
   ResidentVisitorListController(){
   }
 
+  void onChangeText(String text){
+    const duration = Duration (milliseconds: 800);
+    if(searchOnStoppedTyping !=null){
+      searchOnStoppedTyping?.cancel();
+    }
+    searchOnStoppedTyping= Timer(duration, () {
+      userName= text;
+     print('Texto COMPLETO: ${text}');
+     update();
+    });
+
+  }
   void createOrder() async {
     // Si tenemos bolsa de orden
     if(GetStorage().read('shopping_bag') != null && GetStorage().read('address') !=null){
@@ -59,13 +75,23 @@ class ResidentVisitorListController extends GetxController{
     }
 
   }
-  Future<List<User>> getVisitorMen() async{
-    users= await usersProvider.findVisitorMen();
+  Future<List<User>> getVisitorMen(String userName) async{
+    print('User name x buscar: ${userName}');
+    if(userName.isEmpty){
+      print('User name Vacio');
+      users= await usersProvider.findVisitorMen();
+    }
+    else{
+     print('Buscando userName: ${userName}');
+      users= await usersProvider.findVisitorMenByName(userName);
+    }
+
     User u = User.fromJson(GetStorage().read('visitor') ?? {});
     int index = users.indexWhere((us) => us.id == u.id);
     if(index != -1){ // La direccion almacenada en la sesion coincide con alguna que viene de la base de datos
       radioValue.value= index;
     }
+
     return users;
   }
   void handleRadioValueChange(int? value){

@@ -148,7 +148,7 @@ class ResidentProductsDetailPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: ()=> con.addToBag(product!, price,counter),
                 child: Text(
-                  'Agregar \$${price.value ?? ''}',
+                  'Agregar \$${price.value }',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 22

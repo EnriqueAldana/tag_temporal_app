@@ -7,6 +7,8 @@ class ResidentProfileInfoController extends GetxController{
  var user= User.fromJson(GetStorage().read('user')).obs;
 
   void signOut() {
+    GetStorage().remove('addres');
+    GetStorage().remove('shopping_bag');
     GetStorage().remove('user');   // Elimina la session.
     Get.offNamedUntil('/', (route) => false); // Elimina el historial de pantallas
   }

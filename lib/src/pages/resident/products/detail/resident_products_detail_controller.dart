@@ -10,7 +10,7 @@ class ResidentProductsDetailController extends GetxController {
 
 void checkIfProductsWasAdded(Product product, var price, var counter){
 
-  price.value = product!.price! ?? 0.0;
+  price.value = product.price ?? 0.0;
   if(GetStorage().read('shopping_bag') != null){
     if(GetStorage().read('shopping_bag') is List<Product>){
       selectedProducts = GetStorage().read('shopping_bag');

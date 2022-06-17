@@ -49,6 +49,16 @@ class User {
         roles: json["roles"] == null ? [] : List<Rol>.from(json["roles"].map((model)=> Rol.fromJson(model))),
     );
 
+    static List<User> fromJsonList(List<dynamic> jsonList) {
+        List<User> toList = [];
+
+        jsonList.forEach((item) {
+            User user = User.fromJson(item);
+            toList.add(user);
+        });
+
+        return toList;
+    }
     Map<String, dynamic> toJson() => {
         "id" : id,
         "email": email,

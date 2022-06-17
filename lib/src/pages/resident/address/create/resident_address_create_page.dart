@@ -135,7 +135,7 @@ Widget _textFieldNeighborhood(){
       controller: con.neighborhoodController,
       keyboardType:  TextInputType.text,
       decoration: InputDecoration(
-          hintText: 'Colonia y Mpio',
+          hintText: 'Ciudad',
           prefixIcon: Icon(Icons.location_city)
       ),
     ),
@@ -219,7 +219,7 @@ Widget _textFieldRefPoint(BuildContext context){
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: ElevatedButton(
           onPressed: (){
-            //con.createCategory();
+            con.createAddress();
           },
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15)

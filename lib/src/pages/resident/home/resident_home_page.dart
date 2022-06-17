@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/pages/administrator/tags/list/administrator_tags_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/home/resident_home_controller.dart';
+import 'package:tag_temporal_app/src/pages/resident/orders/list/resident_orders_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/products/list/resident_product_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/tags/list/resident_tags_list_controller.dart';
@@ -20,7 +21,7 @@ class ResidentHomePage extends StatelessWidget {
         index: con.indexTab.value,
         children: [
           ResidentproductListPage(),
-          VisitorTagsListPage(),
+          ResidentOrdersListPage(),
           ResidentProfileInfoPage(),
 
         ],
@@ -41,7 +42,7 @@ class ResidentHomePage extends StatelessWidget {
       items: [
         BottomNavyBarItem(
             icon: Icon(Icons.apps),
-            title: Text('Tags'),
+            title: Text('Pedir Tags'),
             activeColor: Colors.white,
             inactiveColor: Colors.black
             ),

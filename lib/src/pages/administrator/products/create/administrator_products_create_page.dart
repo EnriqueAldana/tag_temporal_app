@@ -78,7 +78,7 @@ class AdministratorProductsCreatePage extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 55),
         margin: EdgeInsets.only(top:15),
-        child: DropdownButton(
+        child: DropdownButton <String>(
           underline: Container(
             alignment: Alignment.centerRight,
             child: Icon(
@@ -100,13 +100,10 @@ class AdministratorProductsCreatePage extends StatelessWidget {
             print('Opcion seleccionada de categoria ${option}');
             con.idCategory.value =option.toString();
           },
-
         )
     );
   }
-
-
-  List<DropdownMenuItem<String?>> _dropDownItems(List<Category> categories){
+  List<DropdownMenuItem<String>> _dropDownItems(List<Category> categories){
     List<DropdownMenuItem<String>> list = [];
     categories.forEach((category) {
       list.add(DropdownMenuItem(

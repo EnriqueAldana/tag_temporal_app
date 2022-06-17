@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tag_temporal_app/src/models/user.dart';
 import 'package:tag_temporal_app/src/pages/administrator/home/administrator_home_page.dart';
-import 'package:tag_temporal_app/src/pages/administrator/tags/list/administrator_tags_list_page.dart';
 import 'package:tag_temporal_app/src/pages/home/home_page.dart';
 import 'package:tag_temporal_app/src/pages/login/login_page.dart';
 import 'package:tag_temporal_app/src/pages/register/register_page.dart';
@@ -13,12 +12,14 @@ import 'package:tag_temporal_app/src/pages/resident/address/create/resident_addr
 import 'package:tag_temporal_app/src/pages/resident/address/list/resident_address_list_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/home/resident_home_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/create/resident_orders_create_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/orders/detail/resident_orders_detail_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/orders/list/resident_orders_list_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/payments/create/resident_payments_create_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/update/resident_profile_update_page.dart';
-import 'package:tag_temporal_app/src/pages/resident/tags/list/resident_tags_list_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/visitors/list/resident_visitors_list_page.dart';
 import 'package:tag_temporal_app/src/pages/roles/roles_page.dart';
 import 'package:tag_temporal_app/src/pages/visitor/home/visitor_home_page.dart';
-import 'package:tag_temporal_app/src/pages/visitor/tags/list/visitor_tags_list_page.dart';
 
 User userSession = User.fromJson(GetStorage().read('user') ?? {});
 void main() async {
@@ -58,8 +59,12 @@ class _MyAppState extends State<MyApp> {
         GetPage(name:'/resident/profile/info', page: ()=> ResidentProfileInfoPage()),
         GetPage(name:'/resident/profile/update', page: ()=> ResidentProfileUpdatePage()),
         GetPage(name:'/resident/orders/create', page: ()=> ResidentOrdersCreatePage()),
+        GetPage(name:'/resident/orders/detail', page: ()=> ResidentOrdersDetailPage()),
+        GetPage(name:'/resident/orders/list', page: ()=> ResidentOrdersListPage()),
         GetPage(name:'/resident/address/create', page: ()=> ResidentAddressCreatePage()),
         GetPage(name:'/resident/address/list', page: ()=> ResidentAddressListPage()),
+        GetPage(name:'/resident/visitor/list', page: ()=> ResidentVisitorListPage()),
+        GetPage(name:'/resident/payments/create', page: ()=> ResidentPaymentsCreatePage()),
       ],
       theme: ThemeData(
         primaryColor: Colors.amber,

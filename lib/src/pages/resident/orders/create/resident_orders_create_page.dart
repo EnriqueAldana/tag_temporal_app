@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tag_temporal_app/src/models/user.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/create/resident_orders_create_controller.dart';
 import 'package:tag_temporal_app/src/widgets/no_data_widget.dart';
 
@@ -68,7 +69,7 @@ class ResidentOrdersCreatePage extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20
+                            fontSize: 18
                         )
                     )
                 ),
@@ -188,5 +189,46 @@ class ResidentOrdersCreatePage extends StatelessWidget {
     ),
     ),
     );
+  }
+
+  Widget _dropDownVisitor(List<User> users){
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 55),
+        margin: EdgeInsets.only(top:15),
+        child: DropdownButton <String>(
+          underline: Container(
+            alignment: Alignment.centerRight,
+            child: Icon(
+              Icons.arrow_drop_down_circle,
+              color: Colors.amber,
+            ),
+          ),
+          elevation: 3,
+          isExpanded: true,
+          hint: Text(
+            'Seleccionar visitante',
+            style: TextStyle(
+                fontSize: 17
+            ),
+          ),
+          items: _dropDownItems(users),
+          value: con.idVisitor.value == '' ? null : con.idVisitor.value,
+          onChanged: (option){
+            print('Opcion seleccionada de Visitante ${option}');
+            con.idVisitor.value =option.toString();
+          },
+        )
+    );
+  }
+  List<DropdownMenuItem<String>> _dropDownItems(List<User> users){
+    List<DropdownMenuItem<String>> list = [];
+    users.forEach((user) {
+      list.add(DropdownMenuItem(
+        child: Text(user.name ?? ''),
+        value: user.id,
+      ));
+    });
+
+    return list;
   }
 }

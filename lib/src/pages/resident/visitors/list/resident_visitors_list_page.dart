@@ -84,7 +84,8 @@ Widget _listVisitors( BuildContext context){
 }
 Widget _radioSelectorUser(User user, int index){
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 20),
+    padding: EdgeInsets.symmetric(horizontal: 1),
+    margin: EdgeInsets.only(top: 2),
     child: Column(
       children: [
         Row(
@@ -94,25 +95,26 @@ Widget _radioSelectorUser(User user, int index){
               groupValue: con.radioValue.value,
               onChanged: con.handleRadioValueChange,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    user.name  ?? '',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold
-                    )
-                ),
-                Text(
-                    user.lastname  ?? '',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold
-                    )
-                ),
-              ],
-            )
+            Container(
+              height: 40,
+              width: 40,
+              child: FadeInImage(
+                image: user.imagePath !=null
+                    ? NetworkImage(user.imagePath)
+                    : AssetImage('assets/img/no-image.png') as ImageProvider,
+                fit: BoxFit.cover,
+                fadeInDuration: Duration(milliseconds: 50),
+                placeholder: AssetImage('assets/img/no-image.png'),
+              ),
+            ),
+            SizedBox(width: 15,),
+            Text(
+                '${user.name  ?? ''} ${ user.lastname  ?? ''}',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold
+                )
+            ),
           ],
         ),
         // Divider(color: Colors.grey[400],);

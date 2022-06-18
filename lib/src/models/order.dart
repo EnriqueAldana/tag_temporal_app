@@ -24,6 +24,7 @@ class Order {
   List<Product>? products= [];
 
   User? resident;
+  User? visitor;
   Address? address;
 
   Order({
@@ -37,7 +38,8 @@ class Order {
     this.timestamp,
     this.products,
     this.address,
-    this.resident
+    this.resident,
+    this.visitor
   });
 
 
@@ -53,6 +55,7 @@ class Order {
     lng: json["lng"],
     timestamp: json["timestamp"],
     resident: json['resident'] is String ? userFromJson(json['resident']) : json['resident'] is User ? json['resident'] : User.fromJson(json['resident'] ?? {}),
+    visitor: json['visitor'] is String ? userFromJson(json['visitor']) : json['visitor'] is User ? json['visitor'] : User.fromJson(json['visitor'] ?? {}),
     address: json['address'] is String ? addressFromJson(json['address']) : json['address'] is Address ? json['address'] : Address.fromJson(json['address'] ?? {}),
 
   );
@@ -78,6 +81,7 @@ class Order {
     "timestamp": timestamp,
     "products": products,
     "resident": resident,
+    "visitor": visitor,
     "address": address,
   };
 }

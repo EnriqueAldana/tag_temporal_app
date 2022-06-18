@@ -14,12 +14,13 @@ class ResidentOrdersDetailPage extends StatelessWidget {
     return Obx(() => Scaffold(
       bottomNavigationBar: Container(
         color: Color.fromRGBO(245, 245, 245, 1),
-        height: MediaQuery.of(context).size.height * 0.40,
+        height: MediaQuery.of(context).size.height * 0.45,
         child: Column(
           children: [
             _dataDate(),
             _dataResident(),
             _dataAddress(),
+            _dataVisitor(),
             _totalToPay(context),
           ],
         ),
@@ -51,7 +52,24 @@ Widget _dataResident(){
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
           title: Text('Residente'),
-          subtitle: Text('${con.order.resident?.name ?? ''} ${con.order.resident?.lastname ?? ''} - Tel:  ${con.order.resident?.phone ?? ''}'),
+          subtitle: Row(
+            children: [
+              Container(
+                height: 40,
+                width: 40,
+                child: FadeInImage(
+                  image: con.order.resident!.imagePath !=null
+                      ? NetworkImage(con.order.resident!.imagePath)
+                      : AssetImage('assets/img/no-image.png') as ImageProvider,
+                  fit: BoxFit.cover,
+                  fadeInDuration: Duration(milliseconds: 50),
+                  placeholder: AssetImage('assets/img/no-image.png'),
+                ),
+              ),
+              SizedBox(width: 15,),
+              Text('${con.order.resident?.name ?? ''} ${con.order.resident?.lastname ?? ''} - Tel:  ${con.order.resident?.phone ?? ''}'),
+            ],
+          ),
           trailing: Icon(Icons.person),
       ),
     );
@@ -76,6 +94,42 @@ Widget _dataResident(){
       ),
     );
   }
+
+  Widget _dataVisitor(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      child: ListTile(
+        title: Text('Visitante'),
+        subtitle: Row(
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              child: FadeInImage(
+                image: con.order.visitor!.imagePath !=null
+                    ? NetworkImage(con.order.visitor!.imagePath)
+                    : AssetImage('assets/img/no-image.png') as ImageProvider,
+                fit: BoxFit.cover,
+                fadeInDuration: Duration(milliseconds: 50),
+                placeholder: AssetImage('assets/img/no-image.png'),
+              ),
+            ),
+            SizedBox(width: 15,),
+            Text(
+                '${con.order.visitor!.name  ?? ''} ${ con.order.visitor!.lastname  ?? ''}',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold
+                )
+            ),
+          ],
+        ),
+        trailing: Icon(Icons.people_rounded),
+      ),
+
+    );
+  }
+
   Widget _cardProduct(Product product){
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical:10),

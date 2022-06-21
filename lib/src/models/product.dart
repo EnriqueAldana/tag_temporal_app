@@ -15,6 +15,9 @@ class Product {
   String? idCategory;
   double? price;
   int? quantity;
+  int? started_date;
+  int? ended_date;
+  int? delivery_time_hours;
 
   Product({
     this.id,
@@ -26,6 +29,9 @@ class Product {
     this.idCategory,
     this.price,
     this.quantity,
+    this.started_date,
+    this.ended_date,
+    this.delivery_time_hours
   });
 
 
@@ -40,6 +46,9 @@ class Product {
     idCategory: json["id_category"],
     price: json["price"].toDouble(),
     quantity: json["quantity"],
+    started_date: json["startde_date"],
+    ended_date: json["ended_date"],
+      delivery_time_hours: json["delivery_time_hours"]
   );
 
   static List<Product> fromJsonList(List<dynamic> jsonList) {
@@ -63,5 +72,8 @@ class Product {
     "id_category": idCategory,
     "price": price,
     "quantity": quantity,
+    "started_date": started_date,
+    "ended_date": ended_date,
+    "delivery_time_hours" : delivery_time_hours
   };
 }

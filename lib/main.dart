@@ -20,6 +20,9 @@ import 'package:tag_temporal_app/src/pages/resident/profile/update/resident_prof
 import 'package:tag_temporal_app/src/pages/resident/visitors/list/resident_visitors_list_page.dart';
 import 'package:tag_temporal_app/src/pages/roles/roles_page.dart';
 import 'package:tag_temporal_app/src/pages/visitor/home/visitor_home_page.dart';
+import 'package:tag_temporal_app/src/pages/visitor/orders/detail/visitor_orders_detail_page.dart';
+import 'package:tag_temporal_app/src/pages/visitor/orders/list/visitor_orders_list_page.dart';
+import 'package:tag_temporal_app/src/pages/visitor/orders/map/visitor_orders_map_page.dart';
 
 User userSession = User.fromJson(GetStorage().read('user') ?? {});
 void main() async {
@@ -55,6 +58,9 @@ class _MyAppState extends State<MyApp> {
         GetPage(name:'/roles', page: ()=> RolesPage()),
         GetPage(name:'/administrator/home', page: ()=> AdministratorHomePage()),
         GetPage(name:'/visitor/home', page: ()=> VisitorHomePage()),
+        GetPage(name:'/visitor/orders/list', page: ()=> VisitorOrdersListPage()),
+        GetPage(name:'/visitor/orders/detail', page: ()=> VisitorOrdersDetailPage()),
+        GetPage(name:'/visitor/orders/map', page: ()=> VisitorOrdersMapPage()),
         GetPage(name:'/resident/home', page: ()=> ResidentHomePage()),
         GetPage(name:'/resident/profile/info', page: ()=> ResidentProfileInfoPage()),
         GetPage(name:'/resident/profile/update', page: ()=> ResidentProfileUpdatePage()),

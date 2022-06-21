@@ -1,3 +1,4 @@
+
 Pendientes por resolver.
 
 OK 1.- El escenario de registrar un usuario sin elegir una foto produce una excepcion.
@@ -11,3 +12,8 @@ Compilacion para Flutter luego de agregar dependencias
 
 flutter --no-color pub get
 
+
+21 Junio
+1.- Modificar UI de alta de producto para agregar tiempo de entrega.
+2.- Modificar Servicio para alta de Producto
+3.- Probar la creacion de la orden

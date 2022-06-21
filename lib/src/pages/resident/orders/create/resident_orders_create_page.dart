@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/models/user.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/create/resident_orders_create_controller.dart';
+import 'package:tag_temporal_app/src/utils/relative_time_util.dart';
 import 'package:tag_temporal_app/src/widgets/no_data_widget.dart';
 
 import '../../../../models/product.dart';
@@ -86,7 +87,7 @@ class ResidentOrdersCreatePage extends StatelessWidget {
       child: Row(
         children: [
           _imageProduct(product),
-          SizedBox(width: 15,),
+          SizedBox(width: 8,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -96,8 +97,9 @@ class ResidentOrdersCreatePage extends StatelessWidget {
                   fontWeight: FontWeight.bold
                 ),
               ),
-              SizedBox(height: 10,),
-              _buttomsAddOrRemove(product)
+              SizedBox(height: 2,),  // NO SE USAN
+              _visitDate(product),
+              //_buttomsAddOrRemove(product) // NO SE USAN
             ],
           ),
           Spacer(),
@@ -129,6 +131,45 @@ class ResidentOrdersCreatePage extends StatelessWidget {
           fontWeight: FontWeight.bold
         ),
       ),
+    );
+  }
+  Widget _visitDate(Product product){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 2),
+          child: Text(
+              'Fecha de visita',
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(top: 2),
+          child: Text(
+            'Desde : ${RelativeTimeUtil.getRelativeTime(product.started_date! ?? 0)}',
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+        Container(
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(top: 2),
+          child: Text(
+            'Hasta: ${RelativeTimeUtil.getRelativeTime(product.ended_date! ?? 0)}',
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+      ],
     );
   }
   Widget _buttomsAddOrRemove(Product product){

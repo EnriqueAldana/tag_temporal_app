@@ -4,6 +4,7 @@ import 'package:tag_temporal_app/src/pages/administrator/tags/list/administrator
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/tags/list/resident_tags_list_controller.dart';
 import 'package:tag_temporal_app/src/pages/visitor/home/visitor_home_controller.dart';
+import 'package:tag_temporal_app/src/pages/visitor/orders/list/visitor_orders_list_page.dart';
 import 'package:tag_temporal_app/src/pages/visitor/tags/list/visitor_tags_list_page.dart';
 import 'package:tag_temporal_app/src/utils/custom_animated_bottom_bar.dart';
 
@@ -18,8 +19,7 @@ class VisitorHomePage extends StatelessWidget {
       IndexedStack(
         index: con.indexTab.value,
         children: [
-          AdministratorTagsListPage(),
-          VisitorTagsListPage(),
+          VisitorOrdersListPage(),
           ResidentProfileInfoPage(),
 
         ],
@@ -38,12 +38,6 @@ class VisitorHomePage extends StatelessWidget {
       selectedIndex: con.indexTab.value,
       onItemSelected: (index ) => con.changeTab(index),
       items: [
-        BottomNavyBarItem(
-            icon: Icon(Icons.apps),
-            title: Text('Inicio'),
-            activeColor: Colors.white,
-            inactiveColor: Colors.black
-            ),
         BottomNavyBarItem(
             icon: Icon(Icons.list),
             title: Text('Mis tags'),

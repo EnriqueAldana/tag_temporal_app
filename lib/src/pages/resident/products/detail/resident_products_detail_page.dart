@@ -9,7 +9,7 @@ class ResidentProductsDetailPage extends StatelessWidget {
 
   late ResidentProductsDetailController con ;
 
-  var counter = 0.obs;
+  var counter = 1.obs;
   var  price= 0.0.obs ;
 
   ResidentProductsDetailPage({@required this.product}) {
@@ -21,8 +21,8 @@ class ResidentProductsDetailPage extends StatelessWidget {
     con.checkIfProductsWasAdded(product!, price, counter);
     return Obx(() => Scaffold(
       bottomNavigationBar: Container(
-          height: 100,
-          child: _buttonsAddToBag()
+          height: 200,
+          child: _buttonsAddToBag(context)
       ),
       body:  Column(
           children: [
@@ -34,6 +34,7 @@ class ResidentProductsDetailPage extends StatelessWidget {
       ),
     ));
   }
+
 
   Widget _textNameProduct() {
     return Container(
@@ -81,70 +82,69 @@ class ResidentProductsDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buttonsAddToBag() {
+  Widget _textFieldStartedDate(BuildContext context){
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: TextField(
+        onTap: () => con.getDataPicker(context),
+        controller: con.startedDateController,
+        autofocus: false,
+        focusNode: AlwaysDisabledFocusNode(),
+        keyboardType:  TextInputType.text,
+        decoration: InputDecoration(
+            hintText: 'Fecha de visita.',
+            prefixIcon: Icon(Icons.calendar_today)
+        ),
+      ),
+    );
+  }
+  Widget _textFieldStartedTime(BuildContext context){
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: TextField(
+        onTap: () => con.getTimePicker(context),
+        controller: con.startedTimeController,
+        autofocus: false,
+        focusNode: AlwaysDisabledFocusNode(),
+        keyboardType:  TextInputType.text,
+        decoration: InputDecoration(
+            hintText: 'Hora de visita',
+            prefixIcon: Icon(Icons.lock_clock)
+        ),
+      ),
+    );
+  }
+  Widget _visitDate(BuildContext context){
+    return Container(
+        margin: EdgeInsets.only(left: 30, right: 30, top: 5),
+        child: Column(
+          children: [
+            Text('Fijar la fecha para visita',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+                ),
+            ),
+            _textFieldStartedDate(context),
+            _textFieldStartedTime(context),
+
+          ],
+        )
+    );
+  }
+  Widget _buttonsAddToBag(BuildContext context) {
     return Column(
       children: [
         Divider(height: 3, color: Colors.grey),
+        _visitDate(context),
+        Divider(height: 3, color: Colors.grey),
         Container(
-          margin: EdgeInsets.only(left: 30, right: 30, top: 25),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
           child: Row(
             children: [
-              ElevatedButton(
-                onPressed: () => con.removeItem(product!, price,counter),
-                child: Text(
-                  '-',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    minimumSize: Size(45, 37),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25),
-                            bottomLeft: Radius.circular(25)
-                        )
-                    )
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  '${counter.value}',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  minimumSize: Size(45, 37),
-
-                ),
-              ),
-              ElevatedButton(
-                onPressed: ()=> con.addItem(product!, price,counter),
-                child: Text(
-                  '+',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    minimumSize: Size(45, 37),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(25),
-                            bottomRight: Radius.circular(25)
-                        )
-                    )
-                ),
-              ),
-              Spacer(),
               ElevatedButton(
                 onPressed: ()=> con.addToBag(product!, price,counter),
                 child: Text(
@@ -162,9 +162,8 @@ class ResidentProductsDetailPage extends StatelessWidget {
                 ),
               )
             ],
-          ),
+          )
         )
-
 
       ],
 
@@ -207,4 +206,11 @@ class ResidentProductsDetailPage extends StatelessWidget {
           )
         ]);
   }
+
+
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }

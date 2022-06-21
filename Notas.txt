@@ -7,6 +7,9 @@ flutter run
 Reconstruir el proyecto. En linea de comandos
 flutter clean
 
+Widget Customizable.
+
+https://pub.dev/packages/calendar_date_picker2
 
 
 Mejoras.

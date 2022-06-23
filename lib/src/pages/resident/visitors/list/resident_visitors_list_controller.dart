@@ -10,6 +10,7 @@ import 'package:tag_temporal_app/src/models/response_api.dart';
 import 'package:tag_temporal_app/src/models/user.dart';
 import 'package:tag_temporal_app/src/providers/orders_provider.dart';
 import 'package:tag_temporal_app/src/providers/users_provider.dart';
+import 'package:tag_temporal_app/src/utils/constants.dart';
 
 class ResidentVisitorListController extends GetxController{
 
@@ -40,17 +41,17 @@ class ResidentVisitorListController extends GetxController{
   }
   void createOrder() async {
     // Si tenemos bolsa de orden
-    if(GetStorage().read('shopping_bag') != null && GetStorage().read('address') !=null){
-      Address a = Address.fromJson(GetStorage().read('address') ?? {});
-      User u = User.fromJson(GetStorage().read('visitor'));
+    if(GetStorage().read(Constants.SHOPPING_BAG_KEY) != null && GetStorage().read(Constants.ADDRESS_KEY) !=null){
+      Address a = Address.fromJson(GetStorage().read(Constants.ADDRESS_KEY) ?? {});
+      User u = User.fromJson(GetStorage().read(Constants.VISITOR_KEY));
       List<Product> products= [];
 
-      if(GetStorage().read('shopping_bag') is List<Product>){
-        products = GetStorage().read('shopping_bag');
+      if(GetStorage().read(Constants.SHOPPING_BAG_KEY) is List<Product>){
+        products = GetStorage().read(Constants.SHOPPING_BAG_KEY);
       }
       else{
         // Obtenemos la lista de productos de la sesion.
-        products = Product.fromJsonList(GetStorage().read('shopping_bag'));
+        products = Product.fromJsonList(GetStorage().read(Constants.SHOPPING_BAG_KEY));
       }
       Order order = Order(
           idResident: user.id,
@@ -63,7 +64,7 @@ class ResidentVisitorListController extends GetxController{
       Fluttertoast.showToast(msg: responseApi.message ?? '', toastLength: Toast.LENGTH_LONG);
 
       if (responseApi.success == true){
-        GetStorage().remove('shopping_bag');
+        GetStorage().remove(Constants.SHOPPING_BAG_KEY);
         Get.toNamed('/resident/payments/create');
       }
 
@@ -86,7 +87,7 @@ class ResidentVisitorListController extends GetxController{
       users= await usersProvider.findVisitorMenByName(userName);
     }
 
-    User u = User.fromJson(GetStorage().read('visitor') ?? {});
+    User u = User.fromJson(GetStorage().read(Constants.VISITOR_KEY) ?? {});
     int index = users.indexWhere((us) => us.id == u.id);
     if(index != -1){ // La direccion almacenada en la sesion coincide con alguna que viene de la base de datos
       radioValue.value= index;
@@ -97,7 +98,7 @@ class ResidentVisitorListController extends GetxController{
   void handleRadioValueChange(int? value){
     radioValue.value=value!;
     print('Valor seleccionado lista de visitantes ${value}');
-    GetStorage().write('visitor', users[value].toJson());
+    GetStorage().write(Constants.VISITOR_KEY, users[value].toJson());
     update();  // Redibuja los widgets
   }
   void goToPayment() {

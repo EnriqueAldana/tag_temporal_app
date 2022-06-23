@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/models/order.dart';
+import 'package:tag_temporal_app/src/models/order_product.dart';
 import 'package:tag_temporal_app/src/pages/visitor/orders/list/visitor_orders_list_controller.dart';
 import 'package:tag_temporal_app/src/widgets/no_data_widget.dart';
 
@@ -35,7 +36,7 @@ class VisitorOrdersListPage extends StatelessWidget {
             children: con.status.map((String status) {
               return FutureBuilder(
                   future: con.getOrders(status) ,
-                  builder: (context, AsyncSnapshot<List<Order>> snapshot){
+                  builder: (context, AsyncSnapshot<List<OrderProduct>> snapshot){
                     if (snapshot.hasData){
                       if(snapshot.data!.length >0){
                         return ListView.builder(
@@ -61,9 +62,9 @@ class VisitorOrdersListPage extends StatelessWidget {
     ));
   }
 
-  Widget _cardOrder(Order order){
+  Widget _cardOrder(OrderProduct orderProduct){
     return GestureDetector(
-      onTap: () => con.goToOrderDetail(order),
+      onTap: () => con.goToOrderDetail(orderProduct),
       child: Container(
         height: 150,
           margin: EdgeInsets.only(left: 20,right: 20,top: 10),
@@ -87,7 +88,7 @@ class VisitorOrdersListPage extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(top:5),
                     child: Text(
-                      'tagTemporal #${order.id}',
+                      'tagTemporal #${orderProduct.idOrder}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -98,7 +99,7 @@ class VisitorOrdersListPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top:15, left: 20,right: 20),
+                  margin: EdgeInsets.only(top:20, left: 20,right: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -106,19 +107,25 @@ class VisitorOrdersListPage extends StatelessWidget {
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 5),
                           alignment: Alignment.centerLeft,
-                          child: Text('Solicitado: ${ RelativeTimeUtil.getRelativeTime(order.timestamp ?? 0)}')
-                      ),
-                      Container(
-                          width: double.infinity,
-                        margin: EdgeInsets.only(top: 5),
-                          alignment: Alignment.centerLeft,
-                          child: Text('Residente: ${order.resident?.name ?? ''} ${order.resident?.lastname ?? ''} ${order.resident?.lastname2?? ''}'),
+                          child: Text('Hora de inicio: ${ RelativeTimeUtil.getRelativeTime(orderProduct.product!.started_date ?? 0)}')
                       ),
                       Container(
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 5),
                           alignment: Alignment.centerLeft,
-                          child:  Text('Dirección: ${order.address?.addressStreet ?? ''} ${order.address?.externalNumber ?? ''} ${order.address?.internalNumber ?? ''} ${order.address?.neighborhood ?? ''}')
+                          child: Text('Hora de fin: ${ RelativeTimeUtil.getRelativeTime(orderProduct.product!.ended_date ?? 0)}')
+                      ),
+                      Container(
+                          width: double.infinity,
+                        margin: EdgeInsets.only(top: 5),
+                          alignment: Alignment.centerLeft,
+                          child: Text('Residente: ${orderProduct.resident?.name ?? ''} ${orderProduct.resident?.lastname ?? ''} ${orderProduct.resident?.lastname2?? ''}'),
+                      ),
+                      Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.only(top: 5),
+                          alignment: Alignment.centerLeft,
+                          child:  Text('Dirección: ${orderProduct.address?.addressStreet ?? ''} ${orderProduct.address?.externalNumber ?? ''} ${orderProduct.address?.internalNumber ?? ''} ${orderProduct.address?.neighborhood ?? ''}')
                       ),
                     ],
                   ),

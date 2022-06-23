@@ -16,6 +16,7 @@ import '../../../../providers/products_provider.dart';
 class AdministratorProductsCreateController extends GetxController {
 
   TextEditingController nameController = TextEditingController();
+  TextEditingController validityController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
@@ -44,16 +45,18 @@ var  idCategory=''.obs;
     String name = nameController.text;
     String description = descriptionController.text;
     String price = priceController.text;
+    String validity= validityController.text;
 
     print('name : ${name}');
     print('description : ${description}');
     print('PRICE : ${price}');
     print('ID CATEGORY : ${idCategory}');
     ProgressDialog progressDialog= ProgressDialog(context: context);
-    if( isValidForm(name,description,price)){
+    if( isValidForm(name,description,validity,price)){
         Product product = Product(
           name: name,
           description : description,
+            validity_time_hours: int.parse(validity),
           price: double.parse(price),
           idCategory: idCategory.value
         );
@@ -78,7 +81,7 @@ var  idCategory=''.obs;
 
   }
 
-  bool isValidForm(String name, String description , String price){
+  bool isValidForm(String name, String description , String validity,String price){
 
     if (name.isEmpty) {
       Get.snackbar('Formulario no valido', 'Ingresa el nombre del producto');
@@ -87,6 +90,10 @@ var  idCategory=''.obs;
 
     if (description.isEmpty) {
       Get.snackbar('Formulario no valido', 'Ingresa la descripción del producto');
+      return false;
+    }
+    if(validity.isEmpty){
+      Get.snackbar('Formulario no valido', 'Ingresa la vigencia del producto');
       return false;
     }
 
@@ -169,6 +176,7 @@ var  idCategory=''.obs;
   void clearForm(){
     nameController.text = '';
     descriptionController.text = '';
+    validityController.text='';
     priceController.text='';
     priceController.text='';
     imageFile1= null;

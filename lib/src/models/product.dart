@@ -17,7 +17,7 @@ class Product {
   int? quantity;
   int? started_date;
   int? ended_date;
-  int? delivery_time_hours;
+  int? validity_time_hours;
 
   Product({
     this.id,
@@ -31,7 +31,7 @@ class Product {
     this.quantity,
     this.started_date,
     this.ended_date,
-    this.delivery_time_hours
+    this.validity_time_hours
   });
 
 
@@ -43,12 +43,13 @@ class Product {
     image1: json["image1"],
     image2: json["image2"],
     image3: json["image3"],
-    idCategory: json["id_category"],
     price: json["price"].toDouble(),
     quantity: json["quantity"],
-    started_date: json["startde_date"],
+    started_date: json["started_date"],
+    //idCategory: json["id_category"],
     ended_date: json["ended_date"],
-      delivery_time_hours: json["delivery_time_hours"]
+    //validity_time_hours: json["validity_time_hours"]
+
   );
 
   static List<Product> fromJsonList(List<dynamic> jsonList) {
@@ -74,6 +75,14 @@ class Product {
     "quantity": quantity,
     "started_date": started_date,
     "ended_date": ended_date,
-    "delivery_time_hours" : delivery_time_hours
+    "validity_time_hours" : validity_time_hours
+  };
+
+  Map<String, dynamic> toJsonDate() => {
+    "id": id,
+    "name": name,
+    "started_date": started_date,
+    "ended_date": ended_date,
+    "validity_time_hours" : validity_time_hours
   };
 }

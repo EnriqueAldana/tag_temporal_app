@@ -28,22 +28,13 @@ class ResidentOrdersDetailPage extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          'tagTemporal #${con.order.id}',
+            'tagTemporal #${con.orderProduct.idOrder}-${con.orderProduct.product!.id}-${ RelativeTimeUtil.getRelativeTime(con.orderProduct.product!.started_date ?? 0)}',
           style: TextStyle(
             color: Colors.black
           ),
         ),
       ),
-      body:con.order.products!.isNotEmpty
-          ? ListView(
-        children: con.order.products!.map((Product product){
-          return _cardProduct(product);
-        }).toList(),
-      )
-          : Container(
-          alignment: Alignment.center,
-          child: NoDataWidget(text:'No hay ningún Tag agregado aún')
-      ),
+
     ));
   }
 
@@ -58,8 +49,8 @@ Widget _dataResident(){
                 height: 40,
                 width: 40,
                 child: FadeInImage(
-                  image: con.order.resident!.imagePath !=null
-                      ? NetworkImage(con.order.resident!.imagePath)
+                  image: con.orderProduct.resident!.imagePath !=null
+                      ? NetworkImage(con.orderProduct.resident!.imagePath)
                       : AssetImage('assets/img/no-image.png') as ImageProvider,
                   fit: BoxFit.cover,
                   fadeInDuration: Duration(milliseconds: 50),
@@ -67,7 +58,7 @@ Widget _dataResident(){
                 ),
               ),
               SizedBox(width: 15,),
-              Text('${con.order.resident?.name ?? ''} ${con.order.resident?.lastname ?? ''} - Tel:  ${con.order.resident?.phone ?? ''}'),
+              Text('${con.orderProduct.resident?.name ?? ''} ${con.orderProduct.resident?.lastname ?? ''} - Tel:  ${con.orderProduct.resident?.phone ?? ''}'),
             ],
           ),
           trailing: Icon(Icons.person),
@@ -79,7 +70,7 @@ Widget _dataResident(){
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
         title: Text('Direccion de visita'),
-        subtitle: Text('${con.order.address?.addressStreet ?? ''} ${con.order.address?.externalNumber ?? ''} ${con.order.address?.internalNumber ?? ''} ${con.order.address?.neighborhood ?? ''}'),
+        subtitle: Text('${con.orderProduct.address?.addressStreet ?? ''} ${con.orderProduct.address?.externalNumber ?? ''} ${con.orderProduct.address?.internalNumber ?? ''} ${con.orderProduct.address?.neighborhood ?? ''}'),
         trailing: Icon(Icons.location_on),
       ),
     );
@@ -89,7 +80,7 @@ Widget _dataResident(){
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
         title: Text('Fecha de solicitud'),
-        subtitle: Text(' ${RelativeTimeUtil.getRelativeTime(con.order.timestamp ?? 0)}'),
+        subtitle: Text(' ${RelativeTimeUtil.getRelativeTime(con.orderProduct.timestamp ?? 0)}'),
         trailing: Icon(Icons.timer),
       ),
     );
@@ -106,8 +97,8 @@ Widget _dataResident(){
               height: 40,
               width: 40,
               child: FadeInImage(
-                image: con.order.visitor!.imagePath !=null
-                    ? NetworkImage(con.order.visitor!.imagePath)
+                image: con.orderProduct.visitor!.imagePath !=null
+                    ? NetworkImage(con.orderProduct.visitor!.imagePath)
                     : AssetImage('assets/img/no-image.png') as ImageProvider,
                 fit: BoxFit.cover,
                 fadeInDuration: Duration(milliseconds: 50),
@@ -116,7 +107,7 @@ Widget _dataResident(){
             ),
             SizedBox(width: 15,),
             Text(
-                '${con.order.visitor!.name  ?? ''} ${ con.order.visitor!.lastname  ?? ''}',
+                '${con.orderProduct.visitor!.name  ?? ''} ${ con.orderProduct.visitor!.lastname  ?? ''}',
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold
@@ -203,6 +194,26 @@ Widget _dataResident(){
                       fontSize: 20
                   )
               ),
+    con.orderProduct.status == 'ASIGNADO'
+    ? Container(
+    margin: EdgeInsets.symmetric(horizontal: 20),
+    // width: MediaQuery.of(context).size.width * 0.6,
+    child: ElevatedButton(
+    onPressed: ()=> con.updateOrderToOnCancel(),
+    style: ElevatedButton.styleFrom(
+    padding: EdgeInsets.all(15)
+    ),
+    child: Text(
+    'CANCELAR',
+    style: TextStyle(
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+    fontSize: 18
+    )
+    )
+    ),
+    )
+        : Container()
 
             ],
           ),

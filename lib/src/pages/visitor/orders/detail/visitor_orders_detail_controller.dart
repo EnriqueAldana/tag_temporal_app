@@ -1,31 +1,33 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/models/order.dart';
+import 'package:tag_temporal_app/src/models/order_product.dart';
 import 'package:tag_temporal_app/src/models/response_api.dart';
 import 'package:tag_temporal_app/src/providers/orders_provider.dart';
 
 class VisitorOrdersDetailController extends GetxController{
 
-Order order = Order.fromJson(Get.arguments['order']);
+OrderProduct orderProduct = OrderProduct.fromJson(Get.arguments['orderProduct']);
 OrdersProvider ordersProvider= OrdersProvider();
 
 var total=0.0.obs;
 VisitorOrdersDetailController(){
-  print('Orden: ${order.toJson()}');
+  print('OrdenProduct: ${orderProduct.toJson()}');
   getTotal();
 }
 
 void getTotal(){
   total.value= 0.0;
-  order.products!.forEach((product) {
-    total.value = total.value + ( product.quantity! * product.price!);
-  });
+    total.value = total.value + ( orderProduct.product!.quantity! * orderProduct.product!.price!);
+
 
 }
 
 void updateOrderToOnMyWay() async {
-  // Actualizar orden al estatus 'EN CAMINO'
-  order.status='EN CAMINO';
+  // Actualizar orden al estatus 'ENCAMINO'
+  orderProduct.status='ENCAMINO';
+  // Actualizar el estatus del producto
+
   ResponseApi responseApi= await ordersProvider.updateStatus(order);
   Fluttertoast.showToast(msg: responseApi.message ?? '', toastLength: Toast.LENGTH_LONG);
   if(responseApi.success == true){
@@ -34,8 +36,5 @@ void updateOrderToOnMyWay() async {
   else{
     Get.snackbar('Error en la petición', responseApi.message ?? '');
   }
-  
-
-
 }
 }

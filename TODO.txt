@@ -6,7 +6,9 @@ OK 1.- El escenario de registrar un usuario sin elegir una foto produce una exce
 2.- Pantalla para Altas de Compañias.
 3.- Pantalla para promover Visitantes a Residentes x parte del administrador de empresa
     Impacta al Modulo de direcciones.
-
+    21 Jun 2022
+4.- Bug en la agregacion de tags a la orden, tags con diferente fecha y hora no entran.
+5.- Bug Verificar que la fecha final sea mayor que la inicial
 
 Compilacion para Flutter luego de agregar dependencias
 
@@ -14,6 +16,10 @@ flutter --no-color pub get
 
 
 21 Junio
-1.- Modificar UI de alta de producto para agregar tiempo de entrega.
-2.- Modificar Servicio para alta de Producto
-3.- Probar la creacion de la orden
+1.- Modificar UI de alta de producto para agregar tiempo de entrega. OK
+2.- Modificar Servicio para alta de Producto. OK
+3.- OK .Probar la creacion de la orden. OK
+4.- OK .Listado de tags, no listar los pagados por que se entoiende que en la emision se pagaron
+
+23 Junio 2022
+5.- Implementar servicio para actualizar estatus de la orden y del producto.

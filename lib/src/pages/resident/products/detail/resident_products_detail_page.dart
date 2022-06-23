@@ -13,12 +13,14 @@ class ResidentProductsDetailPage extends StatelessWidget {
   var  price= 0.0.obs ;
 
   ResidentProductsDetailPage({@required this.product}) {
-    con = Get.put(ResidentProductsDetailController());
+    con = Get.put(ResidentProductsDetailController(product!));
+    print('Precio y cantidad del Product pasado a detalle para agregar ${product!.price} ${product!.quantity}');
   }
 
   @override
   Widget build(BuildContext context) {
-    con.checkIfProductsWasAdded(product!, price, counter);
+    // No es necesario agregar cantidad de producto a la cesta
+    // con.checkIfProductsWasAdded(product!, price, counter);
     return Obx(() => Scaffold(
       bottomNavigationBar: Container(
           height: 200,
@@ -146,9 +148,9 @@ class ResidentProductsDetailPage extends StatelessWidget {
           child: Row(
             children: [
               ElevatedButton(
-                onPressed: ()=> con.addToBag(product!, price,counter),
+                onPressed: ()=> con.addToBag(product!),
                 child: Text(
-                  'Agregar \$${price.value }',
+                  'Agregar \$${con.price.value }',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 22

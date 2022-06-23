@@ -151,7 +151,7 @@ class ResidentOrdersCreatePage extends StatelessWidget {
           alignment: Alignment.topLeft,
           margin: EdgeInsets.only(top: 2),
           child: Text(
-            'Desde : ${RelativeTimeUtil.getRelativeTime(product.started_date! ?? 0)}',
+            'Desde : ${RelativeTimeUtil.getRelativeTime(product.started_date ?? 0)}',
             style: TextStyle(
                 color: Colors.grey,
                 fontWeight: FontWeight.bold
@@ -162,7 +162,7 @@ class ResidentOrdersCreatePage extends StatelessWidget {
           alignment: Alignment.topLeft,
           margin: EdgeInsets.only(top: 2),
           child: Text(
-            'Hasta: ${RelativeTimeUtil.getRelativeTime(product.ended_date! ?? 0)}',
+            'Hasta: ${RelativeTimeUtil.getRelativeTime(product.ended_date ?? 0)}',
             style: TextStyle(
                 color: Colors.grey,
                 fontWeight: FontWeight.bold

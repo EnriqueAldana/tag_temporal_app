@@ -26,8 +26,8 @@ class AdministratorProductsCreatePage extends StatelessWidget {
 
   Widget _boxForm(BuildContext context){
     return Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        margin: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.18, left: 50 , right: 50),
+        height: MediaQuery.of(context).size.height * 0.8,
+        margin: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.12, left: 50 , right: 50),
         decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: <BoxShadow>[
@@ -44,6 +44,7 @@ class AdministratorProductsCreatePage extends StatelessWidget {
                 _textYourInfo(),
                 _textFieldName(),
                 _textFieldDescription(),
+                _textFieldValidityTime(),
                 _textFieldPrice(),
                 _dropDownCategories(con.categories),
                 _textImages(),
@@ -77,7 +78,7 @@ class AdministratorProductsCreatePage extends StatelessWidget {
   Widget _dropDownCategories(List<Category> categories){
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 55),
-        margin: EdgeInsets.only(top:15),
+        margin: EdgeInsets.only(top:10),
         child: DropdownButton <String>(
           underline: Container(
             alignment: Alignment.centerRight,
@@ -124,7 +125,7 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
                 elevation: 3,
                 child: Container(
                   padding: EdgeInsets.all(10),
-                  height: 70,
+                  height: 60,
                     width: MediaQuery.of(context).size.width * 0.15,
                     child: imageFile != null
                       ? Image.file(
@@ -185,6 +186,20 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
     );
   }
 
+  Widget _textFieldValidityTime(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      child: TextField(
+        controller: con.validityController,
+        keyboardType:  TextInputType.number,
+        decoration: InputDecoration(
+            hintText: 'Vigencia en horas',
+            prefixIcon: Icon(Icons.lock_clock)
+        ),
+      ),
+    );
+  }
+
   Widget _textFieldPrice(){
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40),
@@ -202,7 +217,7 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
 
   Widget _textYourInfo(){
     return Container(
-        margin: EdgeInsets.only(top: 40, bottom: 20),
+        margin: EdgeInsets.only(top: 10, bottom: 10),
         child: Text(
           'Ingresa la información siguiente:',
           style: TextStyle(
@@ -214,7 +229,7 @@ Widget _cardImage(BuildContext context ,File? imageFile, int numberFile){
   }
   Widget _textImages(){
     return Container(
-        margin: EdgeInsets.only(top: 40, bottom: 20),
+        margin: EdgeInsets.only(top: 15, bottom: 15),
         child: Text(
           'Carge las imagenes del producto.',
           style: TextStyle(

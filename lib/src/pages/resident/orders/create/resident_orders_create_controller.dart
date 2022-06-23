@@ -2,6 +2,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tag_temporal_app/src/models/address.dart';
+import 'package:tag_temporal_app/src/utils/constants.dart';
 
 import '../../../../models/product.dart';
 
@@ -62,14 +63,15 @@ class ResidentOrdersCreateController extends GetxController{
 
   void goToAddresList(){
     // Si tenemos bolsa de orden
-    if(GetStorage().read('shopping_bag') != null && GetStorage().read('address') !=null){
+    //if(GetStorage().read(Constants.SHOPPING_BAG_KEY) != null && GetStorage().read('address') !=null){
+    if(GetStorage().read(Constants.SHOPPING_BAG_KEY) != null){
       List<Product> products= [];
-      if(GetStorage().read('shopping_bag') is List<Product>){
-        products = GetStorage().read('shopping_bag');
+      if(GetStorage().read(Constants.SHOPPING_BAG_KEY) is List<Product>){
+        products = GetStorage().read(Constants.SHOPPING_BAG_KEY);
       }
       else{
         // Obtenemos la lista de productos de la sesion.
-        products = Product.fromJsonList(GetStorage().read('shopping_bag'));
+        products = Product.fromJsonList(GetStorage().read(Constants.SHOPPING_BAG_KEY));
       }
      if(products.isNotEmpty){
        Get.toNamed('/resident/address/list');

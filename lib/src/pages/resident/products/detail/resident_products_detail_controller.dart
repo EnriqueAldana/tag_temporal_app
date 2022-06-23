@@ -3,26 +3,62 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tag_temporal_app/src/models/product.dart';
+import 'package:tag_temporal_app/src/utils/constants.dart';
 
 class ResidentProductsDetailController extends GetxController {
 
+  Product?  product;
   List<Product> selectedProducts = [];
-
   TextEditingController startedDateController = TextEditingController();
   TextEditingController startedTimeController = TextEditingController();
 
   DateTime? selectedDate;
   DateTime? ended_date;
   TimeOfDay? selectedTime;
-
-  ResidentProductsDetailController(){
+  var price = 0.0.obs;
+  ResidentProductsDetailController(Product product){
+    this.product= product;
     selectedDate= DateTime.now();
     selectedTime= TimeOfDay.now();
+    print('Inicializamos fecha de visita en constructor');
+    print(' selectedDate  ${selectedDate}');
+    print(' selectedTime  ${selectedTime}');
+    startedDateController.text=selectedDate.toString();
+    startedTimeController.text=selectedTime.toString();
+    // Inicializamos lista de productos seleccionados
+    print('Se inicializa lista de productos seleccionados ');
+    selectedProducts = [];
+    // Cargamos la lista de productos en la bolsa
+    print(' Cargamos lista de productos de la bolsa de compra desde agregar producto');
+    getSelectedproductsFromSession();
+
+    price.value= product.price ?? 0.0;
   }
 
+  void getSelectedproductsFromSession(){
+    if(GetStorage().read('shopping_bag') != null){
+      if(GetStorage().read('shopping_bag') is List<Product>){
+        var result = GetStorage().read('shopping_bag');
+        selectedProducts.clear();
+        print('Productos seleccionados removidos');
+        selectedProducts.addAll(result);
+        print('Productos seleccionados cargados desde la sesion : ${selectedProducts.length}');
+      }
+      else{
+        // Obtenemos la lista de productos de la sesion.
+        var result = Product.fromJsonList(GetStorage().read('shopping_bag'));
+        selectedProducts.clear();
+        print('Productos seleccionados removidos');
+        selectedProducts.addAll(result);
+        print('Productos seleccionados cargados desde la sesion  mediante Json List: ${selectedProducts.length}');
+      }
+    }
+    else{
+      print("No hay bolsa de productos en sesion");
+    }
+  }
   getDataPicker(BuildContext context) async{
-
-    selectedDate= await showDatePicker(
+    DateTime? currentDate= await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
@@ -31,120 +67,130 @@ class ResidentProductsDetailController extends GetxController {
               return Theme(data: ThemeData.dark(), child: child! );
         },
     );
-    updateVisitDateWithTime();
+    print(' currentDate  ${currentDate}');
+    print(' selectedTime  ${selectedTime}');
+    if( currentDate!= null){
+      selectedDate= currentDate;
+      if(selectedTime!=null){
+        Duration hours= Duration(hours:selectedTime!.hour,minutes:selectedTime!.minute);
+        print(' selectedTime  ${hours}');
+        selectedDate= selectedDate!.add(hours);
+        print(' selectedDate  ${selectedDate}');
+      }
+      startedDateController.text=selectedDate.toString();
+
+    }
 
   }
 
   getTimePicker(BuildContext context) async{
 
-    selectedTime= await showTimePicker(
+    TimeOfDay? currentTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       builder: (context, Widget? child){
         return Theme(data: ThemeData.dark(), child: child! );
-      },);
-
-    updateVisitDateWithTime();
-  }
-
-  void updateVisitDateWithTime(){
-    if(selectedDate != null){
+      });
+    if(currentTime != null){
+      selectedTime=currentTime;
+      startedTimeController.text=selectedTime.toString();
+      Duration hours= Duration(hours:selectedTime!.hour,minutes:selectedTime!.minute);
+      selectedDate= DateTime(selectedDate!.year,selectedDate!.month,selectedDate!.day);
+      selectedDate= selectedDate!.add(hours);
       startedDateController.text=selectedDate.toString();
     }
-    if(selectedTime != null){
-      startedTimeController.text=selectedTime!.hour.toString() + ':' + selectedTime!.minute.toString();
-      Duration horasYMinutos= Duration(hours: selectedTime!.hour, minutes: selectedTime!.minute);
-      // Fijar horas y minutos de la fecha a cero
-      selectedDate= new DateTime(selectedDate!.year,
-          selectedDate!.month,
-          selectedDate!.day);
-      selectedDate= selectedDate!.add(horasYMinutos);
-      startedDateController.text= selectedDate.toString();
-    }
-    int timestamp = selectedDate!.millisecondsSinceEpoch;
-    print(' timestamp de la fecha seleccionada  ${timestamp}');
-    final DateTime date1 = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    print('Fecha seleccionada ${date1}');
-  }
-void checkIfProductsWasAdded(Product product, var price, var counter){
 
-  price.value = product.price ?? 0.0;
-  if(GetStorage().read('shopping_bag') != null){
-    if(GetStorage().read('shopping_bag') is List<Product>){
-      selectedProducts = GetStorage().read('shopping_bag');
+  }
+
+
+
+bool checkIfProductsWasAdded(Product product)  {
+    // Agregamos al producto la información de fecha y hora de visita
+  // Aqui agregar la fecha final de visita de acuerdo al tiempo de entrega.
+  int hours =0;
+  if(product.validity_time_hours!= null){
+    hours =  product.validity_time_hours!;
+  }
+  Duration deliveryTime = Duration(hours: hours  );
+  ended_date=selectedDate!.add(deliveryTime);
+  product.ended_date= ended_date!.millisecondsSinceEpoch;
+  List<Product> sessionProducts=[];
+  if(GetStorage().read(Constants.SHOPPING_BAG_KEY) != null){
+    if(GetStorage().read(Constants.SHOPPING_BAG_KEY) is List<Product>){
+      sessionProducts = GetStorage().read(Constants.SHOPPING_BAG_KEY);
     }
     else{
       // Obtenemos la lista de productos de la sesion.
-      selectedProducts= Product.fromJsonList(GetStorage().read('shopping_bag'));
+      sessionProducts= Product.fromJsonList(GetStorage().read(Constants.SHOPPING_BAG_KEY));
     }
-
-    int index = selectedProducts.indexWhere((p) => p.id == product.id);
-
-    if(index != -1){  // Producto ha sido agregado
-      counter.value= selectedProducts[index].quantity ?? 0;
-      price.value= product.price! * counter.value;
-
-      // Imprimimos los productos agregados a la cesta
-      selectedProducts.forEach((p) {
-        print('Tag: ${p.toJson()}');
-      });
-    }
-  }
-}
-
-  void addToBag(Product product, var price, var counter) {
-    if (counter.value > 0){
-      // Validar si el producto ya fue agregado con get storage a la sesion del dispositivo
-
-      // Aqui validar que el producto no tenga el id y la fecha inicial igual
-      int index = selectedProducts.indexWhere((p) => (p.id == product.id) && (p.started_date == product.started_date));
-      if(index == -1) { // No ha sido agregado
-        // Significa que el producto no ha sido agregado
-        if(product.quantity == null){
-          if (counter.value > 0){
-            product.quantity= counter.value;
-          }
-          else{
-            product.quantity=1;
-          }
-        }
-        product.started_date=selectedDate!.millisecondsSinceEpoch;
-        // Aqui agregar la fecha final de visita de acuerdo al tiempo de entrega.
-        int hours =0;
-        if(product.delivery_time_hours!= null){
-           hours =  product.delivery_time_hours!;
-        }
-        Duration deliveryTime = Duration(hours: hours  );
-        ended_date=selectedDate!.add(deliveryTime);
-        product.ended_date= ended_date!.millisecondsSinceEpoch;
-        selectedProducts.add(product);
-
-      }
-      else{  // Ya ha sido agregado en storage  y solo basta actualizar la cantidad
-
-        selectedProducts[index].quantity = counter.value;
-      }
-      GetStorage().write('shopping_bag', selectedProducts);
-      Fluttertoast.showToast(msg: 'Tag agregado.');
+    print('Productos en la sesion:');
+    sessionProducts.forEach((p) {
+      print('Tag: ${p.toJsonDate()}');
+    });
+    print('Producto x buscar: id: ${product.id} startedDate: ${product.started_date} ');
+    int index = sessionProducts.indexWhere((p) => (p.id == product.id ) & (p.started_date== product.started_date ));
+    if(index != -1){  // Producto se encuentra en la lista de la sesion y por tanto ha sido agregado
+      print('Se encontró y NO se agregará');
+      return false;
     }
     else{
-      Fluttertoast.showToast(msg: 'Deberá seleccionar una cantidad mayor a cero para agregar..');
+      print('No se encontró y se agregará');
+      sessionProducts.add(product);
+      // Se escribe la sesion con la lista de productos seleccionados
+      GetStorage().write(Constants.SHOPPING_BAG_KEY, sessionProducts);
+      return true;
+    }
+
+  }else{
+    print('Se crea la sesion con el primer producto');
+    sessionProducts.add(product);
+    // Se escribe la sesion con la lista de productos seleccionados
+    GetStorage().write(Constants.SHOPPING_BAG_KEY, sessionProducts);
+    return true;
+  }
+
+}
+
+  void addToBag(Product product) {
+    if ( isValidForm()){
+      // Actualizamos la fecha de inicio al producto
+      product.quantity=1;
+      product.started_date=selectedDate!.millisecondsSinceEpoch;
+      // Validar si el producto ya fue agregado con get storage a la sesion del dispositivo
+      // Imprimimos los productos agregados a la cesta
+      //print('===============Productos seleccionados ==========');
+     // selectedProducts.forEach((p) {
+     //   print('Tag: ${p.toJsonDate()}');
+     // });
+
+      if(checkIfProductsWasAdded(product)){  // No se encontro en sesion y se agregó
+        // Significa que el producto no ha sido agregado
+        Fluttertoast.showToast(msg: 'Tag agregado.');
+      }
+      else{ // Ya se agregó a la sesion anteriormente
+        Fluttertoast.showToast(msg: 'El tag ya ha sido agregado anteriormente..');
+      }
+
+    }
+    else{
+      Fluttertoast.showToast(msg: 'Deberá seleccionar una fecah y hora de visita..');
     }
 
   }
 
-  // No son usados
-  void addItem(Product product, var price, var counter) {
-    counter.value = counter.value + 1;
-    price.value = product.price! * counter.value;
-  }
+   bool isValidForm(){
 
-  // No son usados
-  void removeItem(Product product, var price, var counter) {
-    if(counter.value > 0){
-      counter.value = counter.value - 1;
-      price.value = product.price! * counter.value;
+    if(startedDateController.text.isEmpty){
+      Get.snackbar('Formulario no válido', 'Ingresa la fecha de visita');
+      Fluttertoast.showToast(msg: 'Deberá seleccionar una fecha de visita para agregar..');
+      return false;
     }
-
+    if(startedTimeController.text.isEmpty){
+      Get.snackbar('Formulario no válido', 'Ingresa hora de visita');
+      Fluttertoast.showToast(msg: 'Deberá seleccionar una hora de visita para agregar..');
+      return false;
+    }
+    return true;
   }
+
 }

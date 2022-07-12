@@ -15,7 +15,7 @@ class ResidentOrdersListController extends GetxController{
 
   // Status
   // 1.- EMITIDO , 2.- PAGADO, 3.- ENCAMINO, 4.- VISITADO, 5.- COMPLETADO
-  List<String> status = <String> ['ASIGNADO','ENCAMINO','VISITADO','COMPLETO'].obs;
+  List<String> status = <String> ['ASIGNADO','ENCAMINO','VISITADO','COMPLETO','CANCELADO'].obs;
   Future<List<OrderProduct>> getOrdersProducts(String status) async{
     List<OrderProduct> productList = await productsProvider.findByResidentAndStatus(user.id ?? '0', status);
     productList.forEach((p) {

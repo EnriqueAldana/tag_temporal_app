@@ -35,7 +35,7 @@ class LoginPage
 Widget _boxForm(BuildContext context){
   return Container(
     height: MediaQuery.of(context).size.height * 0.45,
-    margin: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.36, left: 50 , right: 50),
+    margin: EdgeInsets.only( top: MediaQuery.of(context).size.height * 0.42, left: 50 , right: 50),
     decoration: BoxDecoration(
       color: Colors.white,
       boxShadow: <BoxShadow>[
@@ -123,7 +123,7 @@ Widget _buttonLogin(){
   Widget _backgroudCover(BuildContext context){
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.42,
+      height: MediaQuery.of(context).size.height * 0.48,
       color: Colors.amber,
       
     );
@@ -167,7 +167,7 @@ Widget _buttonLogin(){
   Widget _imageCover(){
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.only(top: 2, bottom: 2),
+        margin: EdgeInsets.only(top: 1, bottom: 1),
         alignment: Alignment.center ,
         child: Image.asset(
         'assets/img/tagTemporal_Logo_Ambar.PNG',

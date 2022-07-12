@@ -88,7 +88,7 @@ class VisitorOrdersListPage extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(top:5),
                     child: Text(
-                      'tagTemporal #${orderProduct.idOrder}',
+                      'tagTemporal #${orderProduct.idOrder} - ${orderProduct.product!.id}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class VisitorOrdersListPage extends StatelessWidget {
                           width: double.infinity,
                           margin: EdgeInsets.only(top: 5),
                           alignment: Alignment.centerLeft,
-                          child:  Text('Dirección: ${orderProduct.address?.addressStreet ?? ''} ${orderProduct.address?.externalNumber ?? ''} ${orderProduct.address?.internalNumber ?? ''} ${orderProduct.address?.neighborhood ?? ''}')
+                          child:  Text('Dirección: ${orderProduct.address?.addressStreet ?? ''} ${orderProduct.address?.externalNumber ?? ''} ${orderProduct.address?.internalNumber ?? ''} ${orderProduct.address?.neighborhood ?? ''} ${orderProduct.address?.state ?? ''} ${orderProduct.address?.country ?? ''} ${orderProduct.address?.postalCode ?? ''}')
                       ),
                     ],
                   ),

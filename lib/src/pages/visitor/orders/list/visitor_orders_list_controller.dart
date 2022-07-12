@@ -12,14 +12,20 @@ class VisitorOrdersListController extends GetxController{
   User user = User.fromJson(GetStorage().read('user') ?? {});
   // Status
   // 1.- EMITIDO , 2.- PAGADO, 3.- POR VISITAR 4.- EN CAMINO, 5.- VISITADO, 6.- COMPLETADO
-  List<String> status = <String> ['ASIGNADO','ENCAMINO','VISITADO','COMPLETO'].obs;
+  List<String> status = <String> ['ASIGNADO','ENCAMINO','VISITADO','COMPLETO','CANCELADO'].obs;
   Future<List<OrderProduct>> getOrders(String status) async{
     //print('Trayendo productos x Visitante ${user.id} y Estatus ${status}');
     List<OrderProduct> productList = await productsProvider.findByVisitorAndStatus(user.id ?? '0', status);
+    productList.forEach((element) {
+      print('Lista de order-product ${element.toJson()}');
+    });
+
     return productList;
   }
 
   void goToOrderDetail(OrderProduct orderProduct){
+    //print('OrdenProduct de la lista: ${orderProduct.toJson()}');
+    orderProduct.toJson();
     Get.toNamed('/visitor/orders/detail', arguments: {
       'orderProduct': orderProduct.toJson()
     });

@@ -58,7 +58,7 @@ class ResidentOrdersCreatePage extends StatelessWidget {
                   )
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: EdgeInsets.symmetric(horizontal: 10),
                // width: MediaQuery.of(context).size.width * 0.6,
                 child: ElevatedButton(
                     onPressed: ()=> con.goToAddresList(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/models/product.dart';
 import 'package:tag_temporal_app/src/pages/visitor/orders/detail/visitor_orders_detail_controller.dart';
+import 'package:tag_temporal_app/src/utils/constants.dart';
 import 'package:tag_temporal_app/src/utils/relative_time_util.dart';
 import 'package:tag_temporal_app/src/widgets/no_data_widget.dart';
 
@@ -11,10 +12,10 @@ class VisitorOrdersDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return  Scaffold(
       bottomNavigationBar: Container(
         color: Color.fromRGBO(245, 245, 245, 1),
-        height: MediaQuery.of(context).size.height * 0.45,
+        height: MediaQuery.of(context).size.height * 0.75,
         child: Column(
           children: [
             _dataDate(),
@@ -35,7 +36,7 @@ class VisitorOrdersDetailPage extends StatelessWidget {
         ),
       ),
 
-    ));
+    );
   }
 
 Widget _dataResident(){
@@ -70,7 +71,7 @@ Widget _dataResident(){
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
         title: Text('Direccion de visita'),
-        subtitle: Text('${con.orderProduct.address?.addressStreet ?? ''} ${con.orderProduct.address?.externalNumber ?? ''} ${con.orderProduct.address?.internalNumber ?? ''} ${con.orderProduct.address?.neighborhood ?? ''}'),
+        subtitle: Text(' ${con.orderProduct.address?.addressStreet ?? ''} ${con.orderProduct.address?.externalNumber ?? ''} ${con.orderProduct.address?.internalNumber ?? ''} ${con.orderProduct.address?.neighborhood ?? ''} ${con.orderProduct.address?.state ?? ''} ${con.orderProduct.address?.country ?? ''} ${con.orderProduct.address?.postalCode ?? ''}'),
         trailing: Icon(Icons.location_on),
       ),
     );
@@ -90,15 +91,15 @@ Widget _dataResident(){
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: ListTile(
-        title: Text('Residente'),
+        title: Text('Visitante'),
         subtitle: Row(
           children: [
             Container(
               height: 40,
               width: 40,
               child: FadeInImage(
-                image: con.orderProduct.resident!.imagePath !=null
-                    ? NetworkImage(con.orderProduct.resident!.imagePath)
+                image: con.orderProduct.visitor!.imagePath !=null
+                    ? NetworkImage(con.orderProduct.visitor!.imagePath)
                     : AssetImage('assets/img/no-image.png') as ImageProvider,
                 fit: BoxFit.cover,
                 fadeInDuration: Duration(milliseconds: 50),
@@ -107,7 +108,7 @@ Widget _dataResident(){
             ),
             SizedBox(width: 15,),
             Text(
-                '${con.orderProduct.resident!.name  ?? ''} ${ con.orderProduct.resident!.lastname  ?? ''}',
+                '${con.orderProduct.visitor!.name  ?? ''} ${ con.orderProduct.visitor!.lastname  ?? ''}',
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold
@@ -186,39 +187,59 @@ Widget _dataResident(){
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                  'TOTAL: \$ ${con.total.value}',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20
-                  )
-              ),
-              con.orderProduct.status == 'ASIGNADO'
-              ? Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                // width: MediaQuery.of(context).size.width * 0.6,
-                child: ElevatedButton(
-                    onPressed: ()=> con.updateOrderToOnMyWay(),
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(15)
-                    ),
-                    child: Text(
-                        'VISITAR',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18
-                        )
-                    )
-                ),
-              )
+
+              con.orderProduct.status_product == Constants.ORDER_PRODUCT_STATUS_ASIGNADO
+                  ? _buttonUpdateOrderProduct()
+                  : con.orderProduct.status_product == Constants.ORDER_PRODUCT_STATUS_ENCAMINO
+                  ? _buttonGoToOrderProductMap()
                   : Container()
 
             ],
           ),
         )
       ],
+    );
+  }
+
+  Widget _buttonUpdateOrderProduct(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      // width: MediaQuery.of(context).size.width * 0.6,
+      child: ElevatedButton(
+          onPressed: ()=> con.updateOrderProductToENCAMINO(),
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(15)
+          ),
+          child: Text(
+              'VISITAR',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18
+              )
+          )
+      ),
+    );
+  }
+  Widget _buttonGoToOrderProductMap(){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      // width: MediaQuery.of(context).size.width * 0.6,
+      child: ElevatedButton(
+          onPressed: ()=> con.goToOrderProductMap(),
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(15),
+            primary: Colors.lightGreenAccent
+          ),
+          child: Text(
+              'Ir al MAPA',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18
+              )
+          )
+      ),
     );
   }
 }

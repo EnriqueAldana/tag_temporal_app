@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tag_temporal_app/src/models/product.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/detail/resident_orders_detail_controller.dart';
+import 'package:tag_temporal_app/src/utils/constants.dart';
 import 'package:tag_temporal_app/src/utils/relative_time_util.dart';
 import 'package:tag_temporal_app/src/widgets/no_data_widget.dart';
 
@@ -11,17 +12,17 @@ class ResidentOrdersDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return  Scaffold(
       bottomNavigationBar: Container(
         color: Color.fromRGBO(245, 245, 245, 1),
-        height: MediaQuery.of(context).size.height * 0.45,
+        height: MediaQuery.of(context).size.height * 0.7,
         child: Column(
           children: [
             _dataDate(),
             _dataResident(),
             _dataAddress(),
             _dataVisitor(),
-            _totalToPay(context),
+            _buttoms(context),
           ],
         ),
       ),
@@ -35,7 +36,7 @@ class ResidentOrdersDetailPage extends StatelessWidget {
         ),
       ),
 
-    ));
+    );
   }
 
 Widget _dataResident(){
@@ -107,7 +108,7 @@ Widget _dataResident(){
             ),
             SizedBox(width: 15,),
             Text(
-                '${con.orderProduct.visitor!.name  ?? ''} ${ con.orderProduct.visitor!.lastname  ?? ''}',
+                '${con.orderProduct.visitor!.name  ?? ''} ${ con.orderProduct.visitor!.lastname  ?? ''} Tel: ${ con.orderProduct.visitor!.phone  ?? ''}',
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold
@@ -177,7 +178,7 @@ Widget _dataResident(){
     );
   }
 
-  Widget _totalToPay(BuildContext context){
+  Widget _buttoms(BuildContext context){
     return Column(
       children: [
         Divider(height: 3, color: Colors.grey[400],),
@@ -186,16 +187,34 @@ Widget _dataResident(){
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                  'TOTAL: \$ ${con.total.value}',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20
-                  )
-              ),
-    con.orderProduct.status == 'ASIGNADO'
-    ? Container(
+              con.orderProduct.status_product == Constants.ORDER_PRODUCT_STATUS_ASIGNADO
+                  ||
+                  con.orderProduct.status_product == Constants.ORDER_PRODUCT_STATUS_ENCAMINO
+                  ?
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                // width: MediaQuery.of(context).size.width * 0.6,
+                child: ElevatedButton(
+                    onPressed: ()=> con.goToOrderProductMap(),
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(15)
+                    ),
+                    child: Text(
+                        'RASTREAR',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                        )
+                    )
+                ),
+              )
+                  : Container(),
+    con.orderProduct.status_product == Constants.ORDER_PRODUCT_STATUS_ASIGNADO
+    ||
+        con.orderProduct.status_product == Constants.ORDER_PRODUCT_STATUS_ENCAMINO
+        ?
+    Container(
     margin: EdgeInsets.symmetric(horizontal: 20),
     // width: MediaQuery.of(context).size.width * 0.6,
     child: ElevatedButton(
@@ -206,12 +225,12 @@ Widget _dataResident(){
     child: Text(
     'CANCELAR',
     style: TextStyle(
-    color: Colors.black,
+    color: Colors.red,
     fontWeight: FontWeight.bold,
     fontSize: 18
-    )
-    )
-    ),
+                  )
+        )
+      ),
     )
         : Container()
 

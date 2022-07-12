@@ -6,7 +6,7 @@ import 'dart:convert';
 
 Address addressFromJson(String str) => Address.fromJson(json.decode(str));
 
-String addressToJson(Address data) => json.encode(data.toJson());
+String? addressToJson(Address data) => json.encode(  data.toJson());
 
 class Address {
 
@@ -48,8 +48,8 @@ class Address {
     state: json["state"],
     country: json["country"],
     postalCode: json["postal_code"],
-    lat: json["lat"].toDouble(),
-    lng: json["lng"].toDouble(),
+    lat: json["lat"],
+    lng: json["lng"],
     idUser: json["id_user"],
   );
 
@@ -64,16 +64,16 @@ class Address {
     return toList;
   }
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "address_street": addressStreet,
-    "external_number": externalNumber,
-    "internal_number": internalNumber,
-    "neighborhood": neighborhood,
-    "state": state,
-    "country": country,
-    "postal_code": postalCode,
-    "lat": lat,
-    "lng": lng,
-    "id_user": idUser,
+    "id": id == null ? "": id,
+    "address": addressStreet == null ? "": addressStreet,
+    "external_number": externalNumber == null ? "": externalNumber,
+    "internal_number": internalNumber == null ? "": internalNumber,
+    "neighborhood": neighborhood == null ? "": neighborhood,
+    "state": state == null ? "": state,
+    "country": country == null ? "": country,
+    "postal_code": postalCode == null ? "": postalCode,
+    "lat": lat == null ? "": lat,
+    "lng": lng == null ? "": lng,
+    "id_user": idUser == null ? "": idUser,
   };
 }

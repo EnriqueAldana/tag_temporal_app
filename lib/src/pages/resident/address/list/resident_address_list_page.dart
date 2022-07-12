@@ -75,33 +75,65 @@ class ResidentAddressListPage extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Row(
-            children: [
-              Radio(
-                value: index,
-                groupValue: con.radioValue.value,
-                onChanged: con.handleRadioValueChange,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      address.addressStreet  ?? '',
+
+          Container(
+            margin: EdgeInsets.only(top:20),
+            child: Row(
+              children: [
+                Radio(
+                  value: index,
+                  groupValue: con.radioValue.value,
+                  onChanged: con.handleRadioValueChange,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        'Calle: ${address.addressStreet  ?? ''}',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                    Text(
+                       'Num. Ext: ${address.externalNumber  ?? ''}' ,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                    Text(
+                    'Num. Int: ${address.internalNumber  ?? ''}',
+                    style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold
+                    )
+                    ),
+                    Text(
+                        'C.P.: ${address.postalCode  ?? ''}',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                    Text(
+                       'Ciudad: ${address.neighborhood  ?? ''}' ,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                    Text(
+                    'Pais : ${address.country  ?? ''}' ,
                       style: TextStyle(
-                          fontSize: 13,
+                      fontSize: 12,
                           fontWeight: FontWeight.bold
                       )
-                  ),
-                  Text(
-                      address.neighborhood  ?? '',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
-                ],
-              )
-            ],
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
           // Divider(color: Colors.grey[400],);
         ],

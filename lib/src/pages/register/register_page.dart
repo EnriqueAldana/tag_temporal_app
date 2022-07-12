@@ -199,7 +199,6 @@ Widget _textYourInfo(){
         );
 }
 Widget _buttonRegister(BuildContext context){
-
   return Container(
     width: double.infinity,
     margin: EdgeInsets.symmetric(horizontal: 40),

@@ -82,9 +82,11 @@ class OrderProduct {
     "lat": lat,
     "lng": lng,
     "timestamp": timestamp,
+    "address":
+    address is String ? address : addressToJson(address!),
     "product": product is String ? product :  productToJson(product!),
     "resident": resident is String ? resident : userToJson(resident!),
     "visitor": visitor is String ? visitor : userToJson(visitor!),
-    "address": address is String ? address : addressToJson(address!),
+
   };
 }

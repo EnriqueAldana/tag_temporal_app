@@ -13,6 +13,7 @@ class CategoriesProvider extends GetConnect {
   User userSession= User.fromJson(GetStorage().read('user') ?? {});
 
   Future<List<Category>> gerAll() async {
+    List<Category> categories=[];
     Response response = await get(
         '$url/getAll',
         headers: {
@@ -25,7 +26,14 @@ class CategoriesProvider extends GetConnect {
       Get.snackbar('Petición denegada', 'No se tiene permiso para traer la lista de categorías');
       return [];
     }
-    List<Category> categories = Category.fromJsonList(response.body);
+
+    if(response.body == null){
+      Get.snackbar('Algo salió mal ...','trayendo la lista de categorías');
+    }
+    else{
+      categories = Category.fromJsonList(response.body);
+    }
+
 
     return categories;
   }

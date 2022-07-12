@@ -11,21 +11,7 @@ import 'package:tag_temporal_app/src/providers/address_provider.dart';
 
 import '../../../../models/user.dart';
 class ResidentAddressCreateController extends GetxService {
-/*
-  `address_street` varchar(180) NOT NULL,
-  `external_number` varchar(100) NOT NULL,
-  `internal_number` varchar(100) NOT NULL,
-  `neighborhood` varchar(180) NOT NULL,
-  `state` varchar(180) NOT NULL,
-  `country` varchar(180) NOT NULL,
-  `postal_code` varchar(5) NOT NULL,
-  `lat` DOUBLE PRECISION NOT NULL,
-  `lng` DOUBLE PRECISION NOT NULL,
-  `created_at` timestamp NOT NULL,
-  `updated_at` timestamp NOT NULL,
-  `id_user` bigint NOT NULL,
-  `id_company` bigint NOT NULL,
-  */
+
 TextEditingController address_streetController = TextEditingController();
 TextEditingController external_numberController = TextEditingController();
 TextEditingController internal_numberController = TextEditingController();
@@ -61,9 +47,12 @@ void openGoogleMaps(BuildContext context) async {
   stateController.text=refPointMap['department'];
   countryController.text=refPointMap['country'];
 }
+
+
  void createAddress() async {
-  String addres_street= address_streetController.text;
-  String external_number = external_numberController.text;
+  //String addres_street= refPointController.text + address_streetController.text;
+   String addres_street= address_streetController.text;
+   String external_number = external_numberController.text;
   String internal_number = internal_numberController.text;
   String neighborhood= neighborhoodController.text;
   String state= stateController.text;
@@ -82,12 +71,14 @@ void openGoogleMaps(BuildContext context) async {
         lng:lngRefPoint,
         idUser: user.id
     );
+    //print('Direccion x guardar: ${address.toJson()}');
     ResponseApi responseApi= await addressProvider.create(address);
     // Hacer que la nueva direccion vaya a la sesion
     if (responseApi.success == true){
       address.id = responseApi.data;
       GetStorage().write('address', address.toJson()); // Se sube a la sesion la nueva lista de direcciones
       residentAddressListController.update(); // Le pedimos que actualice los widgets
+      resetForm();  // reiniciamos a vacio los campos de direccion
       Get.back();  // Regresa a la pantalla anterior, donde se listan las direcciones
 
     }
@@ -95,6 +86,7 @@ void openGoogleMaps(BuildContext context) async {
 
   }
  }
+
 
  bool isValidForm(String addres_street,String external_number,String internal_number,String neighborhood,String postal_code,String state,String country){
 
@@ -106,11 +98,7 @@ void openGoogleMaps(BuildContext context) async {
     Get.snackbar('Formulario no válido', 'Ingresa el numero exterior ');
     return false;
   }
-  if (internal_number.isEmpty){
-    internal_numberController.text='No aplica';
-    //Get.snackbar('Formulario no válido', 'Ingresa el numero interior ');
-    //return false;
-  }
+
   if (neighborhood.isEmpty){
     Get.snackbar('Formulario no válido', 'Ingresa la ciudad.');
     return false;
@@ -137,5 +125,16 @@ void openGoogleMaps(BuildContext context) async {
     return false;
   }
   return true;
+ }
+
+ void resetForm(){
+    address_streetController.text="";
+    external_numberController.text="";
+    internal_numberController.text="";
+    neighborhoodController.text="";
+    stateController.text="";
+    postal_codeController.text="";
+    countryController.text="";
+    refPointController.text="";
  }
 }

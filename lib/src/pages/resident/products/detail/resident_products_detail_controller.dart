@@ -166,6 +166,8 @@ bool checkIfProductsWasAdded(Product product)  {
       if(checkIfProductsWasAdded(product)){  // No se encontro en sesion y se agregó
         // Significa que el producto no ha sido agregado
         Fluttertoast.showToast(msg: 'Tag agregado.');
+        // Mandar a la lista de productos.
+        goToProductList();
       }
       else{ // Ya se agregó a la sesion anteriormente
         Fluttertoast.showToast(msg: 'El tag ya ha sido agregado anteriormente..');
@@ -173,11 +175,14 @@ bool checkIfProductsWasAdded(Product product)  {
 
     }
     else{
-      Fluttertoast.showToast(msg: 'Deberá seleccionar una fecah y hora de visita..');
+      Fluttertoast.showToast(msg: 'Deberá seleccionar una fecha y hora de visita..');
     }
 
   }
 
+  void goToProductList(){
+    Get.back();  // Cerrarmos la ventana emergente
+  }
    bool isValidForm(){
 
     if(startedDateController.text.isEmpty){

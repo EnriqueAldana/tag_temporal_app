@@ -145,12 +145,12 @@ Widget _buttonNext(BuildContext context){
     height: 50 ,
     margin: EdgeInsets.symmetric(horizontal: 40),
     child: ElevatedButton(
-        onPressed: ()=> con.createOrder(),
+        onPressed: ()=> con.goToPayment(context),
         style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 15)
         ),
         child: Text(
-          'CONTINUAR',
+          'PAGAR',
           style: TextStyle(
               color: Colors.black
           ),

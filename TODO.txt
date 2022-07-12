@@ -9,7 +9,8 @@ OK 1.- El escenario de registrar un usuario sin elegir una foto produce una exce
     21 Jun 2022
 4.- Bug en la agregacion de tags a la orden, tags con diferente fecha y hora no entran.
 5.- Bug Verificar que la fecha final sea mayor que la inicial
-
+6.- Al agregar una direccion no se actualiza la lista de direcciones.
+7.- No se muestra la ruta entre el visitante y el residente
 Compilacion para Flutter luego de agregar dependencias
 
 flutter --no-color pub get
@@ -22,4 +23,34 @@ flutter --no-color pub get
 4.- OK .Listado de tags, no listar los pagados por que se entoiende que en la emision se pagaron
 
 23 Junio 2022
-5.- Implementar servicio para actualizar estatus de la orden y del producto.
+5.- OK Implementar servicio para actualizar estatus de la orden y del producto.
+
+28 Junio 2022
+6. OK Implementar mapa Visitor con ruta de su posicion al residente.
+
+7.- OKAjustae direccion de residente, quitar Noaplica para num int
+
+5 Julio 2022
+8.- Revisar mapa de Residente y ajustar FROM y TO, funciona solo al hacer refresh.
+
+
+6 Julio 2022
+
+Ajustar en los Providers la validacion del response.body. Si es nullo mandar un mensaje
+if(response.body == null){
+      Get.snackbar('Algo salió mal ...','trayendo la lista de categorías');
+    }
+    else{
+      categories = Category.fromJsonList(response.body);
+    }
+
+1.- Al agregar una direccion la lista no se refresca con la direccion agregada.
+2.- OK Agregar el caso de uso de que cuando se cancele el tag, emita un mensaje y se actualice al visitante.
+
+3.- Agregar tipo de documento y su numero en la pantalla de registro.
+
+
+
+Casos de PRUEBA
+1.- Actualizar MAPA Visitante cuando Residente, CANCELE
+2.- Actualizar MAPA Residente cuando Visitante, VISITADO

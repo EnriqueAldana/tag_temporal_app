@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,7 +15,10 @@ import 'package:tag_temporal_app/src/pages/resident/home/resident_home_page.dart
 import 'package:tag_temporal_app/src/pages/resident/orders/create/resident_orders_create_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/detail/resident_orders_detail_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/orders/list/resident_orders_list_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/orders/map/resident_orders_map_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/payments/create/resident_payments_create_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/payments/installments/resident_payments_installments_page.dart';
+import 'package:tag_temporal_app/src/pages/resident/payments/status/resident_payments_status_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/info/resident_profile_info_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/profile/update/resident_profile_update_page.dart';
 import 'package:tag_temporal_app/src/pages/resident/visitors/list/resident_visitors_list_page.dart';
@@ -27,6 +31,8 @@ import 'package:tag_temporal_app/src/pages/visitor/orders/map/visitor_orders_map
 User userSession = User.fromJson(GetStorage().read('user') ?? {});
 void main() async {
   await GetStorage.init();
+  // Stripe.publishableKey = 'pk_test_51LK7jTGOZgTCxUsdxF6Y9ruTZy5uynEly650rhB5MTkjcCVYnqohbS7tyyzkTL46RzT3t25py3HTXLkr8HFix8c800RnKD5V6b';
+ // await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 
@@ -50,6 +56,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title:'tag Temporal',
       debugShowCheckedModeBanner: false,
+      //initialRoute: '/resident/payments/create',
       initialRoute: userSession.id != null ?  userSession.roles!.length > 1 ? '/roles' : '/resident/home' : '/',
       getPages: [
         GetPage(name:'/', page: ()=> LoginPage()),
@@ -67,10 +74,15 @@ class _MyAppState extends State<MyApp> {
         GetPage(name:'/resident/orders/create', page: ()=> ResidentOrdersCreatePage()),
         GetPage(name:'/resident/orders/detail', page: ()=> ResidentOrdersDetailPage()),
         GetPage(name:'/resident/orders/list', page: ()=> ResidentOrdersListPage()),
+        GetPage(name:'/resident/orders/map', page: ()=> ResidentOrdersMapPage()),
         GetPage(name:'/resident/address/create', page: ()=> ResidentAddressCreatePage()),
         GetPage(name:'/resident/address/list', page: ()=> ResidentAddressListPage()),
         GetPage(name:'/resident/visitor/list', page: ()=> ResidentVisitorListPage()),
         GetPage(name:'/resident/payments/create', page: ()=> ResidentPaymentsCreatePage()),
+        GetPage(name:'/resident/payments/installments', page: ()=> ResidentPaymentsInstallmentsPage()),
+        GetPage(name:'/resident/payments/status', page: ()=> ResidentPaymentsStatusPage()),
+
+
       ],
       theme: ThemeData(
         primaryColor: Colors.amber,
